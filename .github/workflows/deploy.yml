@@ -1,16 +1,16 @@
 # The name displayed for this workflow in GitHub's "Actions" tab.
 name: Deploy static website
 
-
-# Defines what causes this workflow to run.
 on:
-
-  # Run whenever someone pushes a commit...
   push:
-
-    # ...specifically to the "main" branch.
     branches:
       - main
+
+# Give the GitHub Actions token permission to modify
+# files in the repository.
+permissions:
+  contents: write
+
 
 
 # A workflow consists of one or more jobs.
