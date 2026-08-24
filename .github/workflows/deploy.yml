@@ -137,8 +137,8 @@ jobs:
             # Move into the directory containing your website.
             #
             # Your actual directory is:
-            #   /var/www/html/project/
-            cd /var/www/html/project/
+            #   /var/www/html/project/terra-in-cognita/
+            cd /var/www/html/project/terra-in-cognita/
 
             # Download the latest commit from GitHub and update
             # the working directory.
