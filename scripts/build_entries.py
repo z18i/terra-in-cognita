@@ -17,6 +17,381 @@ INDEX_FILE = ROOT / "index.html"
 CSS_SOURCE = ROOT / "css" / "stylez.css"
 BUILD_CSS_DIR = BUILD_DIR / "css"
 
+START_MARKER = "<!-- ENTRIES_START -->"
+END_MARKER = "<!-- ENTRIES_END -->"
+
+
+MOJIBAKE_MARKERS = (
+    "Ã",
+    "Â",
+    "â",
+    "ð",
+    "ƒ",
+    "„",
+    "™",
+    "œ",
+    "ž",
+    "�",
+)
+
+
+def mojibake_score(text: str) -> int:
+    score = 0
+
+    for marker in MOJIBAKE_MARKERS:
+        score += text.count(marker)
+
+    common_sequences = (
+        "Ã¤",
+        "Ã¶",
+        "Ã¼",
+        "ÃŸ",
+        "â€",
+        "ðŸ",
+        "Â¯",
+        "Â°",
+    )
+
+    for sequence in common_sequences:
+        score += 3 * text.count(sequence)
+
+    return score
+
+
+def repair_mojibake(text: str) -> str:
+    original_score = mojibake_score(text)
+
+    if original_score == 0:
+        return text
+
+    candidates = []
+
+    for encoding in ("cp1252", "latin1"):
+        try:
+            candidate = text.encode(encoding).decode("utf-8")
+        except (UnicodeEncodeError, UnicodeDecodeError):
+            continue
+
+        candidates.append(candidate)
+
+    if not candidates:
+        return text
+
+    best = min(candidates, key=mojibake_score)
+
+    if mojibake_score(best) < original_score:
+        return best
+
+    return text
+
+
+def read_utf8(path: Path) -> str:
+    try:
+        text = path.read_text(encoding="utf-8")
+    except UnicodeDecodeError as exc:
+        raise SystemExit(
+            f"ERROR: {path.relative_to(ROOT)} is not valid UTF-8.\n"
+            f"Save the file as UTF-8.\n"
+            f"Details: {exc}"
+        )
+
+    repaired = repair_mojibake(text)
+
+    if repaired != text:
+        print(
+            f"Repaired likely UTF-8 mojibake: "
+            f"{path.relative_to(ROOT)}"
+        )
+
+    return repaired
+
+
+def html_escape(text: str) -> str:
+    """
+    Escape text that will be inserted into HTML metadata.
+    """
+    return (
+        text
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def get_entry_files() -> list[Path]:
+    """
+    Return all source diary entries, newest first.
+    """
+    return sorted(
+        (
+            path
+            for path in SOURCE_DIR.iterdir()
+            if path.is_file()
+            and path.suffix.lower() in {".html", ".htm"}
+        ),
+        key=lambda path: path.name,
+        reverse=True,
+    )
+
+
+def build_entry(
+    source: Path,
+    previous_entry: Path | None,
+    next_entry: Path | None,
+) -> Path:
+
+    content = read_utf8(source).strip()
+
+    titles = re.findall(
+        r"<title\b[^>]*>(.*?)</title\s*>",
+        content,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+
+    if len(titles) != 1:
+        raise SystemExit(
+            f"ERROR: {source.relative_to(ROOT)} must contain exactly "
+            f"one <title>...</title> element. Found {len(titles)}."
+        )
+
+    title = html_escape(titles[0].strip())
+
+    body = re.sub(
+        r"<title\b[^>]*>.*?</title\s*>",
+        "",
+        content,
+        count=1,
+        flags=re.IGNORECASE | re.DOTALL,
+    ).strip()
+
+    if not body:
+        raise SystemExit(
+            f"ERROR: {source.relative_to(ROOT)} has a title "
+            f"but no body content."
+        )
+
+    navigation_parts = []
+
+    if previous_entry is not None:
+        navigation_parts.append(
+            f'<a href="{previous_entry.name}" class="previous">'
+            f'← Previous</a>'
+        )
+
+    navigation_parts.append(
+        '<a href="../index.html" class="index-link">Index</a>'
+    )
+
+    if next_entry is not None:
+        navigation_parts.append(
+            f'<a href="{next_entry.name}" class="next">'
+            f'Next →</a>'
+        )
+
+    navigation = "\n                ".join(navigation_parts)
+
+    generated = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{title}</title>
+
+    <link rel="stylesheet" href="../css/stylez.css">
+</head>
+
+<body>
+
+    <main class="notebook-page">
+
+        <header class="entry-header">
+            <div class="entry-date">{title}</div>
+            <h1>{title}</h1>
+        </header>
+
+        <article class="entry-content">
+{body}
+        </article>
+
+        <nav class="entry-navigation">
+                {navigation}
+        </nav>
+
+    </main>
+
+</body>
+</html>
+"""
+
+    destination = BUILD_ENTRIES_DIR / source.name
+
+    destination.write_text(
+        generated,
+        encoding="utf-8",
+        newline="\n",
+    )
+
+    return destination
+
+
+def update_index() -> None:
+    """
+    Update only the section between ENTRIES_START and ENTRIES_END
+    in the repository's main index.html.
+    """
+
+    if not INDEX_FILE.exists():
+        raise SystemExit("ERROR: index.html not found.")
+
+    content = read_utf8(INDEX_FILE)
+
+    if START_MARKER not in content:
+        raise SystemExit(
+            "ERROR: ENTRIES_START marker not found in index.html"
+        )
+
+    if END_MARKER not in content:
+        raise SystemExit(
+            "ERROR: ENTRIES_END marker not found in index.html"
+        )
+
+    start_position = content.index(START_MARKER)
+    end_position = content.index(END_MARKER)
+
+    if start_position >= end_position:
+        raise SystemExit(
+            "ERROR: ENTRIES_START must appear before ENTRIES_END"
+        )
+
+    files = get_entry_files()
+
+    lines = [
+        '<ul class="entries">'
+    ]
+
+    for file in files:
+        lines.append(
+            f'  <li><a href="entries/{file.name}">'
+            f'{file.stem}'
+            f'</a></li>'
+        )
+
+    lines.append("</ul>")
+
+    entries_html = "\n".join(lines)
+
+    start = start_position + len(START_MARKER)
+    end = end_position
+
+    updated = (
+        content[:start]
+        + "\n"
+        + entries_html
+        + "\n"
+        + content[end:]
+    )
+
+    INDEX_FILE.write_text(
+        updated,
+        encoding="utf-8",
+        newline="\n",
+    )
+
+
+def main() -> int:
+
+    if not SOURCE_DIR.exists():
+        raise SystemExit(
+            "ERROR: entries/ directory not found."
+        )
+
+    if not CSS_SOURCE.exists():
+        raise SystemExit(
+            f"ERROR: {CSS_SOURCE.relative_to(ROOT)} not found."
+        )
+
+    # Rebuild everything from scratch.
+    if BUILD_DIR.exists():
+        shutil.rmtree(BUILD_DIR)
+
+    BUILD_ENTRIES_DIR.mkdir(parents=True)
+    BUILD_CSS_DIR.mkdir(parents=True)
+
+    entries = get_entry_files()
+
+    if not entries:
+        print("WARNING: no HTML entries found in entries/")
+
+    for index, source in enumerate(entries):
+
+        # Newest → oldest.
+        #
+        # Previous = older entry.
+        # Next = newer entry.
+        previous_entry = (
+            entries[index + 1]
+            if index + 1 < len(entries)
+            else None
+        )
+
+        next_entry = (
+            entries[index - 1]
+            if index > 0
+            else None
+        )
+
+        destination = build_entry(
+            source,
+            previous_entry,
+            next_entry,
+        )
+
+        print(
+            f"Built: "
+            f"{source.relative_to(ROOT)} -> "
+            f"{destination.relative_to(ROOT)}"
+        )
+
+    shutil.copy2(
+        CSS_SOURCE,
+        BUILD_CSS_DIR / CSS_SOURCE.name,
+    )
+
+    print(
+        f"Copied: "
+        f"{CSS_SOURCE.relative_to(ROOT)} -> "
+        f"{(BUILD_CSS_DIR / CSS_SOURCE.name).relative_to(ROOT)}"
+    )
+
+    update_index()
+
+    print("Updated index.html entry list.")
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())#!/usr/bin/env python3
+
+from pathlib import Path
+import re
+import shutil
+import sys
+
+
+ROOT = Path(__file__).resolve().parent.parent
+
+SOURCE_DIR = ROOT / "entries"
+BUILD_DIR = ROOT / "build"
+BUILD_ENTRIES_DIR = BUILD_DIR / "entries"
+
+INDEX_FILE = ROOT / "index.html"
+
+CSS_SOURCE = ROOT / "css" / "stylez.css"
+BUILD_CSS_DIR = BUILD_DIR / "css"
+
 
 START_MARKER = "<!-- ENTRIES_START -->"
 END_MARKER = "<!-- ENTRIES_END -->"
