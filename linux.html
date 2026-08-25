@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Linux — Terra Incognita</title>
+
+    <link
+        rel="stylesheet"
+        href="css/linux.css"
+    >
+</head>
+
+
+<body>
+
+    <header class="site-header">
+
+        <div class="site-header-inner">
+
+            <a href="index.html" class="site-title">
+                Terra Incognita
+            </a>
+
+            <span class="site-section">
+                Linux
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <div class="layout">
+
+
+        <!-- =====================================================
+             SIDEBAR / TABLE OF CONTENTS
+             ===================================================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-title">
+                Linux notes
+            </div>
+
+            <nav>
+
+                <a href="#files">
+                    Files & directories
+                </a>
+
+                <a href="#text">
+                    Text manipulation
+                </a>
+
+                <a href="#finding">
+                    Finding things
+                </a>
+
+                <a href="#wildcards">
+                    Wildcards & globbing
+                </a>
+
+                <a href="#permissions">
+                    Permissions
+                </a>
+
+                <a href="#processes">
+                    Processes & services
+                </a>
+
+                <a href="#networking">
+                    Networking
+                </a>
+
+                <a href="#ssh">
+                    SSH
+                </a>
+
+                <a href="#git">
+                    Git
+                </a>
+
+                <a href="#useful">
+                    Useful commands
+                </a>
+
+            </nav>
+
+
+            <a
+                href="index.html"
+                class="back-link"
+            >
+                ← Back to diary
+            </a>
+
+        </aside>
+
+
+        <!-- =====================================================
+             MAIN CONTENT
+             ===================================================== -->
+
+        <main class="content">
+
+            <header class="page-introduction">
+
+                <div class="eyebrow">
+                    KNOWLEDGE NOTEBOOK
+                </div>
+
+                <h1>
+                    Linux
+                </h1>
+
+                <p class="intro">
+                    Things I learned while figuring out how the
+                    machine actually works.
+                </p>
+
+            </header>
+
+
+            <!-- =================================================
+                 FILES & DIRECTORIES
+                 ================================================= -->
+
+            <section
+                id="files"
+                class="knowledge-section"
+            >
+
+                <h2>
+                    Files & directories
+                </h2>
+
+                <p>
+                    Basic commands for navigating the filesystem,
+                    creating files, copying things and moving around.
+                </p>
+
+
+                <h3>
+                    Navigation
+                </h3>
+
+                <pre><code>pwd
+ls
+ls -la
+cd /var/www
+cd ..
+cd ~</code></pre>
+
+
+                <h3>
+                    Creating and removing
+                </h3>
+
+                <pre><code>mkdir new-directory
+mkdir -p parent/child/grandchild
+
+touch example.txt
+
+rm example.txt
+rm -r directory</code></pre>
+
+
+                <h3>
+                    Copying and moving
+                </h3>
+
+                <pre><code>cp file.txt backup.txt
+
+cp -r directory backup-directory
+
+mv old-name.txt new-name.txt</code></pre>
+
+            </section>
+
+
+            <!-- =================================================
+                 TEXT MANIPULATION
+                 ================================================= -->
+
+            <section
+                id="text"
+                class="knowledge-section"
+            >
+
+                <h2>
+                    Text manipulation
+                </h2>
+
+                <p>
+                    Commands for inspecting and transforming text
+                    from the shell.
+                </p>
+
+
+                <h3>
+                    Reading files
+                </h3>
+
+                <pre><code>cat file.txt
+
+less file.txt
+
+head file.txt
+
+tail file.txt
+
+tail -f logfile.log</code></pre>
+
+
+                <h3>
+                    Search and replace
+                </h3>
+
+                <pre><code>grep "word" file.txt
+
+grep -i "word" file.txt
+
+grep -R "word" .
+
+sed 's/old/new/g' file.txt</code></pre>
+
+
+                <h3>
+                    Combining commands
+                </h3>
+
+                <pre><code>cat file.txt | grep "error"
+
+cat file.txt | sort | uniq</code></pre>
+
+            </section>
+
+
+            <!-- =================================================
+                 FINDING THINGS
+                 ================================================= -->
+
+            <section
+                id="finding"
+                class="knowledge-section"
+            >
+
+                <h2>
+                    Finding things
+                </h2>
+
+                <p>
+                    Useful techniques for locating files, directories
+                    and text.
+                </p>
+
+
+                <pre><code>find . -name "*.html"
+
+find /var/www -type f -name "*.log"
+
+grep -R "something" /var/www</code></pre>
+
+            </section>
+
+
+            <!-- =================================================
+                 WILDCARDS
+                 ================================================= -->
+
+            <section
+                id="wildcards"
+                class="knowledge-section"
+            >
+
+                <h2>
+                    Wildcards & globbing
+                </h2>
+
+                <p>
+                    Shell patterns are useful for working with groups
+                    of files without naming each one individually.
+                </p>
+
+
+                <div class="reference">
+
+                    <div class="reference-row">
+
+                        <code>*</code>
+
+                        <span>
+                            Any number of characters
+                        </span>
+
+                    </div>
+
+
+                    <div class="reference-row">
+
+                        <code>?</code>
+
+                        <span>
+                            Exactly one character
+                        </span>
+
+                    </div>
+
+
+                    <div class="reference-row">
+
+                        <code>[abc]</code>
+
+                        <span>
+                            One character from the set
+                        </span>
+
+                    </div>
+
+
+                    <div class="reference-row">
+
+                        <code>[0-9]</code>
+
+                        <span>
+                            One character from a range
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <pre><code>*.html
+
+2026-*.html
+
+image-??.jpg
+
+file[0-9].txt</code></pre>
+
+            </section>
+
+
+            <!-- =================================================
+                 PERMISSIONS
+                 ================================================= -->
+
+            <section
+                id="permissions"
+                class="knowledge-section"
+            >
+
+                <h2>
+                    Permissions
+                </h2>
+
+                <p>
+                    Linux permissions control who can read, write
+                    and execute a file.
+                </p>
+
+
+                <pre><code>ls -l file.txt
+
+chmod 644 file.txt
+
+chmod +x script.sh
+
+chown user:group file.txt</code></pre>
+
+
+                <h3>
+                    Permission numbers
+                </h3>
+
+                <pre><code>4 = read
+2 = write
+1 = execute
+
+7 = read + write + execute
+6 = read + write
+5 = read + execute
+4 = read only</code></pre>
+
+            </section>
+
+
+            <!-- =================================================
+                 PROCESSES
+                 ================================================= -->
+
+            <section
+                id="processes"
+                class="knowledge-section"
+            >
+
+                <h2>
+                    Processes & services
+                </h2>
+
+                <pre><code>ps aux
+
+top
+
+systemctl status nginx
+
+systemctl restart nginx
+
+systemctl enable nginx</code></pre>
+
+            </section>
+
+
+            <!-- =================================================
+                 NETWORKING
+                 ================================================= -->
+
+            <section
+                id="networking"
+                class="knowledge-section"
+            >
+
+                <h2>
+                    Networking
+                </h2>
+
+                <pre><code>ip addr
+
+ip route
+
+ping example.com
+
+curl https://example.com
+
+ss -tulpn</code></pre>
+
+            </section>
+
+
+            <!-- =================================================
+                 SSH
+                 ================================================= -->
+
+            <section
+                id="ssh"
+                class="knowledge-section"
+            >
+
+                <h2>
+                    SSH
+                </h2>
+
+                <p>
+                    Notes about remote access, keys and
+                    authenticated connections.
+                </p>
+
+                <pre><code>ssh user@example.com
+
+ssh -i ~/.ssh/my_key user@example.com
+
+ssh-keygen -t ed25519</code></pre>
+
+            </section>
+
+
+            <!-- =================================================
+                 GIT
+                 ================================================= -->
+
+            <section
+                id="git"
+                class="knowledge-section"
+            >
+
+                <h2>
+                    Git
+                </h2>
+
+                <pre><code>git status
+
+git log --oneline
+
+git fetch origin
+
+git pull origin main
+
+git diff</code></pre>
+
+            </section>
+
+
+            <!-- =================================================
+                 USEFUL COMMANDS
+                 ================================================= -->
+
+            <section
+                id="useful"
+                class="knowledge-section"
+            >
+
+                <h2>
+                    Useful commands
+                </h2>
+
+                <p>
+                    Miscellaneous commands that are worth remembering.
+                </p>
+
+                <pre><code>whoami
+
+uname -a
+
+df -h
+
+du -sh *
+
+free -h
+
+history
+
+man command</code></pre>
+
+            </section>
+
+
+            <!-- =================================================
+                 FOOTER
+                 ================================================= -->
+
+            <footer class="page-footer">
+
+                <a href="index.html">
+                    ← Back to Terra Incognita
+                </a>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
