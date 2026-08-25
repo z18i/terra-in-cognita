@@ -1,0 +1,442 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+
+    min-height: 100vh;
+
+    font-family: "Lato", sans-serif;
+
+    color: #c9c3b8;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #292929 0%,
+            #1e1e1e 55%,
+            #161616 100%
+        );
+
+    line-height: 1.65;
+}
+
+
+/* ============================================================
+   Header
+   ============================================================ */
+
+.site-header {
+    position: sticky;
+    top: 0;
+
+    z-index: 10;
+
+    background: rgba(22, 22, 22, 0.94);
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(10px);
+}
+
+.site-header-inner {
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 16px 30px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.site-title {
+    color: #eee7da;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.site-section {
+    color: #8f897e;
+
+    font-size: 0.8rem;
+
+    letter-spacing: 0.15em;
+
+    text-transform: uppercase;
+}
+
+
+/* ============================================================
+   Main page
+   ============================================================ */
+
+.ftp-page {
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 65px 30px 80px;
+}
+
+
+/* ============================================================
+   Page introduction
+   ============================================================ */
+
+.ftp-header {
+    margin-bottom: 55px;
+}
+
+.eyebrow {
+    margin-bottom: 12px;
+
+    color: #8f897e;
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.25em;
+
+    text-transform: uppercase;
+}
+
+.ftp-header h1 {
+    margin: 0;
+
+    font-size: clamp(2.7rem, 7vw, 5rem);
+
+    line-height: 1;
+
+    color: #f4efe5;
+}
+
+.intro {
+    max-width: 650px;
+
+    margin: 22px 0 0;
+
+    color: #aaa296;
+
+    font-size: 1.05rem;
+}
+
+
+/* ============================================================
+   FTP directory
+   ============================================================ */
+
+.directory {
+    border:
+        1px solid rgba(255, 255, 255, 0.10);
+
+    background:
+        rgba(0, 0, 0, 0.18);
+}
+
+
+/* Path bar */
+
+.directory-path {
+    padding: 13px 18px;
+
+    background: #111;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    color: #aaa296;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    font-size: 0.85rem;
+}
+
+
+/* Column header */
+
+.directory-header {
+    display: grid;
+
+    grid-template-columns:
+        minmax(180px, 1fr)
+        minmax(250px, 2fr)
+        minmax(180px, 1fr);
+
+    gap: 25px;
+
+    padding: 11px 18px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
+}
+
+.column-name {
+    color: #777168;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    font-size: 0.76rem;
+
+    letter-spacing: 0.06em;
+
+    text-transform: uppercase;
+}
+
+
+/* ============================================================
+   Script entries
+   ============================================================ */
+
+.script-entry {
+    display: grid;
+
+    grid-template-columns:
+        minmax(180px, 1fr)
+        minmax(250px, 2fr)
+        minmax(180px, 1fr);
+
+    gap: 25px;
+
+    padding: 22px 18px;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.06);
+}
+
+.script-entry:last-child {
+    border-bottom: 0;
+}
+
+
+/* File name */
+
+.script-name a {
+    color: #c5b99f;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    font-size: 0.95rem;
+
+    text-decoration: none;
+}
+
+.script-name a::before {
+    content: "− ";
+
+    color: #676158;
+}
+
+.script-name a:hover {
+    color: #f4efe5;
+}
+
+
+/* Description */
+
+.script-description h2 {
+    margin: 0 0 7px;
+
+    color: #eee7da;
+
+    font-size: 1rem;
+
+    font-weight: 700;
+}
+
+.script-description p {
+    margin: 0;
+
+    color: #aaa296;
+
+    font-size: 0.9rem;
+
+    line-height: 1.65;
+}
+
+
+/* Usage */
+
+.script-usage {
+    color: #aaa296;
+
+    font-size: 0.88rem;
+}
+
+.script-usage p {
+    margin: 0 0 6px;
+}
+
+.script-usage strong {
+    color: #c9c3b8;
+}
+
+
+/* ============================================================
+   Code
+   ============================================================ */
+
+pre {
+    overflow-x: auto;
+
+    margin: 6px 0 18px;
+
+    padding: 10px 12px;
+
+    background: #0d0d0d;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 3px;
+}
+
+code {
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    font-size: 0.82rem;
+
+    color: #d6cfc2;
+}
+
+
+/* ============================================================
+   Notes
+   ============================================================ */
+
+.notes {
+    margin-top: 60px;
+
+    padding-top: 25px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+}
+
+.notes h2 {
+    margin: 0 0 12px;
+
+    color: #eee7da;
+
+    font-size: 1.2rem;
+}
+
+.notes p {
+    max-width: 700px;
+
+    margin: 0;
+
+    color: #8f897e;
+
+    font-size: 0.9rem;
+}
+
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.page-footer {
+    margin-top: 55px;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+}
+
+.page-footer a {
+    color: #9f9689;
+
+    font-size: 0.85rem;
+
+    text-decoration: none;
+}
+
+.page-footer a:hover {
+    color: #eee7da;
+}
+
+
+/* ============================================================
+   Mobile
+   ============================================================ */
+
+@media (max-width: 800px) {
+
+    .ftp-page {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .directory-header {
+        display: none;
+    }
+
+    .script-entry {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .script-name {
+        padding-bottom: 4px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .site-header-inner {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .ftp-page {
+        padding-top: 45px;
+    }
+
+    .script-entry {
+        padding: 20px 15px;
+    }
+}
