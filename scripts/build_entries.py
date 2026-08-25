@@ -15,13 +15,15 @@ BUILD_ENTRIES_DIR = BUILD_DIR / "entries"
 BUILD_CSS_DIR = BUILD_DIR / "css"
 
 INDEX_FILE = ROOT / "index.html"
-CSS_SOURCE = ROOT / "css" / "stylez.css"
+
+CSS_INDEX_SOURCE = ROOT / "css" / "style.css"
+CSS_ENTRIES_SOURCE = ROOT / "css" / "stylez.css"
 
 START_MARKER = "<!-- ENTRIES_START -->"
 END_MARKER = "<!-- ENTRIES_END -->"
 
 
-# Characters commonly seen when UTF-8 has accidentally been
+# Characters commonly seen when UTF-8 has been accidentally
 # interpreted as Latin-1 / Windows-1252.
 MOJIBAKE_MARKERS = (
     "Ã",
@@ -40,9 +42,7 @@ MOJIBAKE_MARKERS = (
 def mojibake_score(text: str) -> int:
     """
     Give suspicious UTF-8 mojibake a score.
-
-    A higher score means the text contains more characters or
-    sequences commonly associated with encoding corruption.
+    Higher score means more suspicious encoding corruption.
     """
 
     score = 0
@@ -59,7 +59,6 @@ def mojibake_score(text: str) -> int:
         "ðŸ",
         "Â¯",
         "Â°",
-        "Â\\",
     )
 
     for sequence in common_sequences:
@@ -72,8 +71,8 @@ def repair_mojibake(text: str) -> str:
     """
     Attempt to repair common UTF-8-as-CP1252/Latin-1 corruption.
 
-    The original text is kept unless a candidate repair has a
-    demonstrably lower mojibake score.
+    Keep the original text unless a candidate repair has a
+    lower mojibake score.
     """
 
     original_score = mojibake_score(text)
@@ -106,9 +105,8 @@ def read_utf8(path: Path) -> str:
     """
     Read a file as strict UTF-8.
 
-    If the file is not valid UTF-8, stop the build with a useful error.
-
-    If recognizable mojibake is found, attempt to repair it.
+    Stop the build if the file is not valid UTF-8.
+    Attempt to repair recognizable mojibake.
     """
 
     try:
@@ -133,7 +131,7 @@ def read_utf8(path: Path) -> str:
 
 def extract_entry_date(source: Path) -> str:
     """
-    Extract YYYY-MM-DD from the entry filename.
+    Extract YYYY-MM-DD from the filename.
 
     Example:
 
@@ -151,8 +149,8 @@ def extract_entry_date(source: Path) -> str:
 
     if not match:
         raise SystemExit(
-            f"ERROR: {source.relative_to(ROOT)} does not use the "
-            f"required YYYY-MM-DD filename format."
+            f"ERROR: {source.relative_to(ROOT)} does not use "
+            f"the required YYYY-MM-DD filename format."
         )
 
     return match.group(1)
@@ -183,23 +181,17 @@ def build_entry(
     """
     Convert a minimal diary entry into a complete HTML document.
 
-    Source example:
+    The source file contains only the HTML that the author wants
+    inside the article, for example:
 
         <h1>The beginning.</h1>
 
         <p>Hello.</p>
 
-    Filename:
+    The filename supplies the document title:
 
         2026-08-26.html
-
-    Generated document gets:
-
-        <title>2026-08-26</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="../css/stylez.css">
-
-    The source HTML itself is otherwise left untouched.
+        -> <title>2026-08-26</title>
     """
 
     content = read_utf8(source).strip()
@@ -213,13 +205,6 @@ def build_entry(
 
     # ------------------------------------------------------------
     # Navigation
-    #
-    # get_entry_files() returns entries newest -> oldest.
-    #
-    # Therefore:
-    #
-    # previous_entry = older entry
-    # next_entry     = newer entry
     # ------------------------------------------------------------
 
     navigation_parts = []
@@ -249,17 +234,7 @@ def build_entry(
     )
 
     # ------------------------------------------------------------
-    # Generate complete HTML document.
-    #
-    # The source entry is inserted directly into <article>.
-    #
-    # No <h1> is generated.
-    # No <p> is generated.
-    #
-    # This means your source remains:
-    #
-    #   <h1>Your heading</h1>
-    #   <p>Your paragraph.</p>
+    # Complete HTML document
     # ------------------------------------------------------------
 
     generated = f"""<!DOCTYPE html>
@@ -312,7 +287,7 @@ def build_entry(
 def update_index() -> None:
     """
     Update only the section between ENTRIES_START and ENTRIES_END
-    in the main index.html.
+    in the repository's main index.html.
     """
 
     if not INDEX_FILE.exists():
@@ -379,9 +354,46 @@ def update_index() -> None:
     )
 
 
+def copy_css() -> None:
+    """
+    Copy both stylesheets into the build directory.
+
+    style.css  = main/index page
+    stylez.css = diary entry pages
+    """
+
+    if not CSS_INDEX_SOURCE.exists():
+        raise SystemExit(
+            f"ERROR: {CSS_INDEX_SOURCE.relative_to(ROOT)} not found."
+        )
+
+    if not CSS_ENTRIES_SOURCE.exists():
+        raise SystemExit(
+            f"ERROR: {CSS_ENTRIES_SOURCE.relative_to(ROOT)} not found."
+        )
+
+    shutil.copy2(
+        CSS_INDEX_SOURCE,
+        BUILD_CSS_DIR / CSS_INDEX_SOURCE.name,
+    )
+
+    shutil.copy2(
+        CSS_ENTRIES_SOURCE,
+        BUILD_CSS_DIR / CSS_ENTRIES_SOURCE.name,
+    )
+
+    print(
+        f"Copied: {CSS_INDEX_SOURCE.relative_to(ROOT)}"
+    )
+
+    print(
+        f"Copied: {CSS_ENTRIES_SOURCE.relative_to(ROOT)}"
+    )
+
+
 def main() -> int:
     """
-    Build the complete website output.
+    Build the complete deployable website.
     """
 
     if not SOURCE_DIR.exists():
@@ -389,16 +401,15 @@ def main() -> int:
             "ERROR: entries/ directory not found."
         )
 
-    if not CSS_SOURCE.exists():
+    if not INDEX_FILE.exists():
         raise SystemExit(
-            f"ERROR: {CSS_SOURCE.relative_to(ROOT)} not found."
+            "ERROR: index.html not found."
         )
 
     # ------------------------------------------------------------
-    # Start with a completely clean build directory.
+    # Start with a clean build directory.
     #
-    # This is important because deleting an entry from entries/
-    # must also remove its generated version from build/.
+    # This ensures deleted entries disappear from the deployment.
     # ------------------------------------------------------------
 
     if BUILD_DIR.exists():
@@ -412,10 +423,6 @@ def main() -> int:
         parents=True
     )
 
-    # ------------------------------------------------------------
-    # Find source entries.
-    # ------------------------------------------------------------
-
     entries = get_entry_files()
 
     if not entries:
@@ -424,21 +431,22 @@ def main() -> int:
         )
 
     # ------------------------------------------------------------
-    # Generate every entry.
+    # Build entries
     # ------------------------------------------------------------
 
     for index, source in enumerate(entries):
 
-        # Entries are newest -> oldest.
+        # Newest -> oldest.
+        #
+        # Previous = older entry.
+        # Next = newer entry.
 
-        # Older entry.
         previous_entry = (
             entries[index + 1]
             if index + 1 < len(entries)
             else None
         )
 
-        # Newer entry.
         next_entry = (
             entries[index - 1]
             if index > 0
@@ -459,25 +467,7 @@ def main() -> int:
         )
 
     # ------------------------------------------------------------
-    # Copy CSS into build/.
-    # ------------------------------------------------------------
-
-    css_destination = BUILD_CSS_DIR / CSS_SOURCE.name
-
-    shutil.copy2(
-        CSS_SOURCE,
-        css_destination,
-    )
-
-    print(
-        f"Copied: "
-        f"{CSS_SOURCE.relative_to(ROOT)}"
-        f" -> "
-        f"{css_destination.relative_to(ROOT)}"
-    )
-
-    # ------------------------------------------------------------
-    # Update the main index.html.
+    # Update main index.html.
     # ------------------------------------------------------------
 
     update_index()
@@ -486,6 +476,30 @@ def main() -> int:
         "Updated index.html entry list."
     )
 
+    # ------------------------------------------------------------
+    # Copy both CSS files.
+    # ------------------------------------------------------------
+
+    copy_css()
+
+    # ------------------------------------------------------------
+    # Copy the updated main index into build/.
+    #
+    # This makes build/ a complete standalone website.
+    # ------------------------------------------------------------
+
+    build_index = BUILD_DIR / "index.html"
+
+    shutil.copy2(
+        INDEX_FILE,
+        build_index,
+    )
+
+    print(
+        f"Copied: index.html -> {build_index.relative_to(ROOT)}"
+    )
+
+    print()
     print(
         "Build completed successfully."
     )
