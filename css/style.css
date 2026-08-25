@@ -1,0 +1,534 @@
+/* ============================================================
+   Terra Incognita
+   Main page / notebook cover
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@500;600&display=swap");
+
+
+/* ============================================================
+   Global
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family: "Lato", sans-serif;
+    color: #292929;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #626262 0%,
+            #505050 65%,
+            #414141 100%
+        );
+
+    padding: 50px 20px;
+}
+
+
+/* ============================================================
+   Main notebook / cover
+   ============================================================ */
+
+main {
+    width: 100%;
+    max-width: 820px;
+    min-height: calc(100vh - 100px);
+
+    margin: 0 auto;
+    padding: 85px 85px 70px;
+
+    position: relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            #242424 0%,
+            #1d1d1d 50%,
+            #171717 100%
+        );
+
+    color: #f4efe5;
+
+    border-radius: 4px;
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.35),
+        0 5px 15px rgba(0, 0, 0, 0.25);
+
+    overflow: hidden;
+}
+
+
+/* A very subtle cover texture */
+
+main::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.08;
+
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,0.08) 0,
+            rgba(255,255,255,0.08) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+
+/* ============================================================
+   Cover content
+   ============================================================ */
+
+.cover {
+    position: relative;
+    z-index: 1;
+
+    min-height: calc(100vh - 250px);
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Small label */
+
+.cover-label {
+    margin: 0 0 25px;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+
+    color: #b9b1a2;
+}
+
+
+/* Main title */
+
+.cover h1 {
+    margin: 0;
+
+    max-width: 650px;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: clamp(3rem, 8vw, 6.2rem);
+    line-height: 0.95;
+    font-weight: 600;
+
+    letter-spacing: -0.03em;
+
+    color: #f5f0e6;
+}
+
+
+/* The shrug */
+
+.shrug {
+    margin-top: 28px;
+
+    font-size: clamp(1.4rem, 3vw, 2rem);
+
+    letter-spacing: 0.05em;
+
+    color: #bdb5a6;
+}
+
+
+/* Decorative line */
+
+.cover-rule {
+    width: 90px;
+    height: 1px;
+
+    margin: 35px 0;
+
+    background: #8f897e;
+}
+
+
+/* Description / introduction */
+
+.cover-intro {
+    max-width: 590px;
+
+    margin: 0;
+
+    font-size: 1.08rem;
+    line-height: 1.75;
+
+    color: #c9c3b8;
+}
+
+
+/* ============================================================
+   Navigation
+   ============================================================ */
+
+.site-navigation {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 18px;
+
+    margin-top: auto;
+    padding-top: 60px;
+}
+
+.site-navigation a {
+    display: inline-block;
+
+    padding: 8px 0;
+
+    color: #d8d1c4;
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    border-bottom: 1px solid transparent;
+}
+
+.site-navigation a:hover {
+    color: #fffaf0;
+
+    border-bottom-color: #8f897e;
+}
+
+
+/* ============================================================
+   Entry index
+   ============================================================ */
+
+.entries-section {
+    position: relative;
+    z-index: 1;
+
+    margin-top: 65px;
+    padding-top: 30px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+
+/* Collapsible heading */
+
+.entries-section details {
+    width: 100%;
+}
+
+
+/* Clickable "Diary" title */
+
+.entries-section summary {
+    cursor: pointer;
+
+    list-style: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px 0;
+
+    color: #eee7da;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+
+/* Remove browser's default triangle */
+
+.entries-section summary::-webkit-details-marker {
+    display: none;
+}
+
+
+/* Our own indicator */
+
+.entries-section summary::after {
+    content: "+";
+
+    font-family: "Lato", sans-serif;
+
+    font-size: 1.3rem;
+    font-weight: 400;
+
+    color: #aaa296;
+
+    transition: transform 0.2s ease;
+}
+
+.entries-section details[open] summary::after {
+    content: "−";
+}
+
+
+/* Entry list */
+
+.entries {
+    list-style: none;
+
+    margin: 22px 0 0;
+    padding: 0;
+
+    max-height: 420px;
+
+    overflow-y: auto;
+
+    border-left: 1px solid rgba(255,255,255,0.12);
+}
+
+
+/* Individual entry */
+
+.entries li {
+    margin: 0;
+    padding: 0;
+}
+
+.entries a {
+    display: flex;
+    align-items: center;
+
+    padding: 11px 18px;
+
+    color: #bfb8ac;
+
+    text-decoration: none;
+
+    font-size: 0.95rem;
+
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        padding-left 0.15s ease;
+}
+
+.entries a:hover {
+    padding-left: 24px;
+
+    color: #fffaf0;
+
+    background: rgba(255,255,255,0.05);
+}
+
+
+/* ============================================================
+   Linux / knowledge page
+   ============================================================ */
+
+.knowledge-page {
+    position: relative;
+    z-index: 1;
+
+    padding-top: 20px;
+}
+
+.knowledge-page h1 {
+    margin: 0 0 12px;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+
+    color: #f5f0e6;
+}
+
+.knowledge-page .subtitle {
+    margin: 0 0 45px;
+
+    color: #aaa296;
+
+    font-size: 1rem;
+}
+
+
+/* Knowledge categories */
+
+.knowledge-section {
+    margin-bottom: 35px;
+}
+
+.knowledge-section h2 {
+    margin: 0 0 12px;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 1.5rem;
+    font-weight: 500;
+
+    color: #eee7da;
+}
+
+.knowledge-section p {
+    margin: 0 0 1em;
+
+    color: #c9c3b8;
+
+    line-height: 1.75;
+}
+
+
+/* Linux command examples */
+
+.knowledge-section pre {
+    overflow-x: auto;
+
+    margin: 18px 0;
+
+    padding: 18px;
+
+    background: #111;
+
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 3px;
+}
+
+.knowledge-section code {
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    font-size: 0.9rem;
+
+    color: #ddd5c8;
+}
+
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.site-footer {
+    position: relative;
+    z-index: 1;
+
+    margin-top: 60px;
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+
+    color: #777168;
+
+    font-size: 0.78rem;
+}
+
+
+/* ============================================================
+   Links
+   ============================================================ */
+
+a {
+    transition: color 0.15s ease;
+}
+
+
+/* ============================================================
+   Mobile
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 0;
+    }
+
+    main {
+        min-height: 100vh;
+
+        padding:
+            55px
+            30px
+            45px;
+
+        border-radius: 0;
+
+        box-shadow: none;
+    }
+
+    .cover {
+        min-height: calc(100vh - 150px);
+    }
+
+    .cover h1 {
+        font-size: clamp(3rem, 16vw, 5rem);
+    }
+
+    .cover-intro {
+        font-size: 1rem;
+    }
+
+    .entries-section {
+        margin-top: 45px;
+    }
+
+    .entries-section summary {
+        font-size: 1.5rem;
+    }
+
+    .entries {
+        max-height: 50vh;
+    }
+
+    .site-navigation {
+        padding-top: 45px;
+    }
+}
+
+
+/* ============================================================
+   Small phones
+   ============================================================ */
+
+@media (max-width: 400px) {
+
+    main {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    .cover-label {
+        letter-spacing: 0.2em;
+    }
+
+    .cover-rule {
+        margin: 28px 0;
+    }
+}
