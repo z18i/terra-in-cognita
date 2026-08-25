@@ -1,56 +1,45 @@
 name: Deploy static website
 
+
 on:
 
-  # Deploy once every day at noon in Warsaw.
-  #
-  # GitHub understands the Europe/Warsaw timezone, including
-  # daylight-saving-time changes.
+  # Deploy once every day at noon in Europe/Warsaw.
   schedule:
     - cron: "0 12 * * *"
       timezone: "Europe/Warsaw"
 
 
-  # Allow an immediate manual deployment from:
-  #
-  # GitHub → Actions → Deploy static website → Run workflow
-  #
+  # Allow an immediate manual deployment.
   workflow_dispatch:
-  
-permissions:
-  contents: write
+
 
 jobs:
 
   ship-to-linode:
 
-    # GitHub's temporary Ubuntu runner.
     runs-on: ubuntu-latest
 
 
     steps:
 
-      # ------------------------------------------------------------
-      # STEP 1: Get the repository
-      # ------------------------------------------------------------
+      # ----------------------------------------------------------
+      # STEP 1: Checkout the repository
+      # ----------------------------------------------------------
 
       - name: Checkout repository
+        uses: actions/checkout@v6
 
-        uses: actions/checkout@v5
 
-
-      # ------------------------------------------------------------
-      # STEP 2: Build the website
+      # ----------------------------------------------------------
+      # STEP 2: Build the complete website
       #
-      # This:
+      # Creates:
       #
-      #   - checks entry files for UTF-8
-      #   - repairs recognizable mojibake
-      #   - creates complete HTML documents
-      #   - puts them in build/entries/
-      #   - copies stylez.css to build/css/
-      #   - updates index.html between the entry markers
-      # ------------------------------------------------------------
+      #   build/index.html
+      #   build/css/style.css
+      #   build/css/stylez.css
+      #   build/entries/*.html
+      # ----------------------------------------------------------
 
       - name: Build website
 
@@ -58,114 +47,43 @@ jobs:
           python3 scripts/build_entries.py
 
 
-      # ------------------------------------------------------------
-      # STEP 3: Commit the generated index.html
-      #
-      # The generated entry pages remain in build/ and are deployed
-      # directly from the GitHub Actions runner.
-      # ------------------------------------------------------------
-
-      - name: Commit generated index
-
-        run: |
-
-          git config user.name "github-actions[bot]"
-
-          git config user.email \
-            "41898282+github-actions[bot]@users.noreply.github.com"
-
-
-          git add index.html
-
-
-          if git diff --cached --quiet; then
-            echo "No generated index changes to commit."
-
-          else
-
-            git commit \
-              -m "Automatically update diary index [skip ci]"
-
-            git push
-
-          fi
-
-
-      # ------------------------------------------------------------
-      # STEP 4: Configure SSH
-      # ------------------------------------------------------------
+      # ----------------------------------------------------------
+      # STEP 3: Configure SSH
+      # ----------------------------------------------------------
 
       - name: Configure SSH
 
         env:
           SSH_PRIVATE_KEY: ${{ secrets.LINODE_SSH_KEY }}
           LINODE_HOST: ${{ secrets.LINODE_HOST }}
-          LINODE_USER: ${{ secrets.LINODE_USER }}
 
         run: |
 
           set -euo pipefail
 
-
           mkdir -p ~/.ssh
 
           chmod 700 ~/.ssh
-
 
           printf '%s\n' "$SSH_PRIVATE_KEY" \
             > ~/.ssh/deploy_key
 
           chmod 600 ~/.ssh/deploy_key
 
-
           ssh-keyscan -H "$LINODE_HOST" \
             >> ~/.ssh/known_hosts
 
 
-      # ------------------------------------------------------------
-      # STEP 5: Prepare the website directories on the Linode
-      # ------------------------------------------------------------
+      # ----------------------------------------------------------
+      # STEP 4: Deploy build/ to Linode
+      #
+      # --delete means the Linode becomes an exact copy of build/.
+      #
+      # If you delete an entry from GitHub, it will also disappear
+      # from the live site during the next deployment.
+      # ----------------------------------------------------------
 
-      - name: Prepare Linode
-
-        env:
-          LINODE_HOST: ${{ secrets.LINODE_HOST }}
-          LINODE_USER: ${{ secrets.LINODE_USER }}
-
-        run: |
-
-          set -euo pipefail
-
-
-          ssh \
-            -i ~/.ssh/deploy_key \
-            "$LINODE_USER@$LINODE_HOST" \
-            << 'EOF'
-
-              set -e
-
-              cd /var/www/html/project/terra-in-cognita/
-
-              # Remove the previously generated directories.
-              #
-              # This is intentional:
-              # if an entry or stylesheet is removed from GitHub,
-              # it also disappears from the live website.
-
-              rm -rf entries
-              rm -rf css
-
-              mkdir -p entries
-              mkdir -p css
-
-          EOF
-
-
-      # ------------------------------------------------------------
-      # STEP 6: Deploy index.html
-      # ------------------------------------------------------------
-
-      - name: Deploy index
+      - name: Deploy website to Linode
 
         env:
           LINODE_HOST: ${{ secrets.LINODE_HOST }}
@@ -175,52 +93,9 @@ jobs:
 
           set -euo pipefail
 
-
-          scp \
-            -i ~/.ssh/deploy_key \
-            index.html \
-            "$LINODE_USER@$LINODE_HOST:/var/www/html/project/terra-in-cognita/index.html"
-
-
-      # ------------------------------------------------------------
-      # STEP 7: Deploy generated diary entries
-      # ------------------------------------------------------------
-
-      - name: Deploy diary entries
-
-        env:
-          LINODE_HOST: ${{ secrets.LINODE_HOST }}
-          LINODE_USER: ${{ secrets.LINODE_USER }}
-
-        run: |
-
-          set -euo pipefail
-
-
-          scp \
-            -i ~/.ssh/deploy_key \
-            -r \
-            build/entries/. \
-            "$LINODE_USER@$LINODE_HOST:/var/www/html/project/terra-in-cognita/entries/"
-
-
-      # ------------------------------------------------------------
-      # STEP 8: Deploy CSS
-      # ------------------------------------------------------------
-
-      - name: Deploy CSS
-
-        env:
-          LINODE_HOST: ${{ secrets.LINODE_HOST }}
-          LINODE_USER: ${{ secrets.LINODE_USER }}
-
-        run: |
-
-          set -euo pipefail
-
-
-          scp \
-            -i ~/.ssh/deploy_key \
-            -r \
-            build/css/. \
-            "$LINODE_USER@$LINODE_HOST:/var/www/html/project/terra-in-cognita/css/"
+          rsync \
+            -az \
+            --delete \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            build/ \
+            "$LINODE_USER@$LINODE_HOST:/var/www/html/project/terra-in-cognita/"
