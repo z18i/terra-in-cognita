@@ -36,9 +36,29 @@ jobs:
       # Creates:
       #
       #   build/index.html
-      #   build/css/style.css
-      #   build/css/stylez.css
-      #   build/entries/*.html
+      #
+      #   build/css/
+      #       style.css
+      #       stylez.css
+      #       linux.css
+      #
+      #   build/entries/
+      #       *.html
+      #
+      #   build/linux/
+      #       index.html
+      #       files.html
+      #       text.html
+      #       finding.html
+      #       wildcards.html
+      #       permissions.html
+      #       processes.html
+      #       networking.html
+      #       ssh.html
+      #       git.html
+      #       commands.html
+      #
+      # The build directory is the complete deployable website.
       # ----------------------------------------------------------
 
       - name: Build website
@@ -79,8 +99,13 @@ jobs:
       #
       # --delete means the Linode becomes an exact copy of build/.
       #
-      # If you delete an entry from GitHub, it will also disappear
-      # from the live site during the next deployment.
+      # Therefore:
+      #
+      #   deleting an entry     -> deletes it from the website
+      #   deleting a Linux page -> deletes it from the website
+      #   deleting a stylesheet -> deletes it from the website
+      #
+      # The Linode contains only the generated website.
       # ----------------------------------------------------------
 
       - name: Deploy website to Linode
