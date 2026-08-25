@@ -1,4 +1,4 @@
-# The name displayed for this workflow in GitHub's "Actions" tab.
+# The name displayed in GitHub's Actions tab.
 name: Deploy static website
 
 on:
@@ -11,275 +11,207 @@ on:
 permissions:
   contents: write
 
-
-
-# A workflow consists of one or more jobs.
 jobs:
 
-  # "deploy" is an arbitrary name for this job.
   ship-to-linode:
 
-    # GitHub provides a temporary Ubuntu machine for the job.
-    #
-    # This machine is NOT your Linode.
-    # GitHub creates it, runs the workflow, and then throws it away.
+    # GitHub's temporary Ubuntu runner.
     runs-on: ubuntu-latest
 
 
-    # The individual things the job needs to do.
     steps:
 
       # ------------------------------------------------------------
-      # STEP 1: Get the repository onto the GitHub Actions runner
+      # STEP 1: Get the repository
       # ------------------------------------------------------------
 
       - name: Checkout repository
 
-        # GitHub's official checkout action.
-        #
-        # This downloads the repository into the temporary
-        # GitHub Actions machine so that we can inspect and
-        # modify the HTML files.
         uses: actions/checkout@v4
 
 
       # ------------------------------------------------------------
-      # STEP 2: Generate the diary entry list
+      # STEP 2: Build the website
+      #
+      # This:
+      #
+      #   - checks entry files for UTF-8
+      #   - repairs recognizable mojibake
+      #   - creates complete HTML documents
+      #   - puts them in build/entries/
+      #   - copies stylez.css to build/css/
+      #   - updates index.html between the entry markers
       # ------------------------------------------------------------
 
-      - name: Generate diary index
+      - name: Build website
 
         run: |
-
-          # Find all HTML diary entries.
-          #
-          # Entries live in:
-          #
-          #   entries/
-          #
-          # We support both .html and .htm files.
-          #
-          # Because filenames use YYYY-MM-DD format, normal
-          # alphabetical sorting is also chronological sorting.
-          #
-          # "sort -r" means newest entries come first.
-          entries=$(find entries -type f \( -name "*.html" -o -name "*.htm" \) \
-            -printf '%f\n' | sort -r)
-
-
-          # Create a temporary file containing the generated
-          # HTML list.
-          #
-          # Example result:
-          #
-          #   <ul class="entries">
-          #     <li><a href="entries/2026-08-26.html">2026-08-26</a></li>
-          #     <li><a href="entries/2026-08-25.html">2026-08-25</a></li>
-          #     <li><a href="entries/2026-08-24.html">2026-08-24</a></li>
-          #   </ul>
-          {
-            echo '<ul class="entries">'
-
-            while IFS= read -r file; do
-
-              # Skip empty lines.
-              [ -z "$file" ] && continue
-
-              echo "  <li><a href=\"entries/$file\">${file%.*}</a></li>"
-
-            done <<< "$entries"
-
-            echo '</ul>'
-
-          } > /tmp/entries.html
-
-
-          # Use Python to replace the automatically generated
-          # section of index.html.
-          #
-          # We deliberately use markers so that the workflow
-          # only changes one specific part of index.html.
-          python3 << 'PY'
-
-          from pathlib import Path
-
-          index = Path("index.html")
-
-          entries_file = Path("/tmp/entries.html")
-
-          content = index.read_text()
-
-          entries = entries_file.read_text().rstrip()
-
-          start_marker = "<!-- ENTRIES_START -->"
-          end_marker = "<!-- ENTRIES_END -->"
-
-
-          # Make sure the markers exist before modifying anything.
-          #
-          # If they don't exist, fail the workflow rather than
-          # accidentally replacing the wrong part of the page.
-          if start_marker not in content:
-              raise SystemExit(
-                  "ERROR: ENTRIES_START marker not found in index.html"
-              )
-
-          if end_marker not in content:
-              raise SystemExit(
-                  "ERROR: ENTRIES_END marker not found in index.html"
-              )
-
-
-          # Find the beginning and end of the generated section.
-          start = content.index(start_marker) + len(start_marker)
-
-          end = content.index(end_marker)
-
-
-          # Replace everything between the markers.
-          content = (
-              content[:start]
-              + "\n"
-              + entries
-              + "\n"
-              + content[end:]
-          )
-
-
-          # Write the updated index.html.
-          index.write_text(content)
-
-          PY
+          python3 scripts/build_entries.py
 
 
       # ------------------------------------------------------------
       # STEP 3: Commit the generated index.html
+      #
+      # The generated entry pages remain in build/ and are deployed
+      # directly from the GitHub Actions runner.
       # ------------------------------------------------------------
 
       - name: Commit generated index
 
         run: |
 
-          # Configure the Git identity used by GitHub Actions
-          # when it creates the automatic commit.
           git config user.name "github-actions[bot]"
 
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
 
 
-          # Add the generated index.html to the next commit.
           git add index.html
 
 
-          # If index.html hasn't changed, there is nothing to commit.
-          #
-          # "git diff --cached --quiet" returns success when there
-          # are no staged changes.
-          #
-          # "exit 0" means:
-          #
-          #   That's fine. Continue the workflow.
-          git diff --cached --quiet && exit 0
+          if git diff --cached --quiet; then
+            echo "No generated index changes to commit."
 
+          else
 
-          # Create the automatic commit.
-          git commit -m "Automatically update diary index"
+            git commit \
+              -m "Automatically update diary index [skip ci]"
 
+            git push
 
-          # Push the generated index.html back to GitHub.
-          git push
+          fi
 
 
       # ------------------------------------------------------------
-      # STEP 4: Deploy the website to the Linode
+      # STEP 4: Configure SSH
       # ------------------------------------------------------------
 
-      - name: Deploy website to Linode
+      - name: Configure SSH
 
         env:
-
-          # Private SSH key stored in the GitHub repository secret:
-          #
-          #   LINODE_SSH_KEY
-          #
-          # This key allows the temporary GitHub Actions machine
-          # to SSH into your Linode.
           SSH_PRIVATE_KEY: ${{ secrets.LINODE_SSH_KEY }}
-
-
-          # Your Linode's IP address or hostname.
-          #
-          # Stored as a GitHub secret rather than being written
-          # directly into this file.
           LINODE_HOST: ${{ secrets.LINODE_HOST }}
-
-
-          # Linux username used for deployment.
-          #
-          # In your case:
-          #
-          #   giter
-          #
           LINODE_USER: ${{ secrets.LINODE_USER }}
-
 
         run: |
 
-          # Create the SSH configuration directory on the
-          # temporary GitHub Actions runner.
+          set -euo pipefail
+
+
           mkdir -p ~/.ssh
 
-
-          # SSH requires restrictive permissions on this directory.
           chmod 700 ~/.ssh
 
 
-          # Write the private key from the GitHub secret to a
-          # temporary file.
-          #
-          # This file exists only on the temporary GitHub runner.
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_PRIVATE_KEY" \
+            > ~/.ssh/deploy_key
 
-
-          # Private SSH keys must only be readable by their owner.
           chmod 600 ~/.ssh/deploy_key
 
 
-          # Add the Linode's SSH host key to known_hosts.
-          #
-          # This prevents SSH from stopping and asking:
-          #
-          #   "Are you sure you want to continue connecting?"
-          #
-          # which cannot be answered interactively by GitHub Actions.
-          ssh-keyscan -H "$LINODE_HOST" >> ~/.ssh/known_hosts
+          ssh-keyscan -H "$LINODE_HOST" \
+            >> ~/.ssh/known_hosts
 
 
-          # Connect to the Linode.
-          #
-          # Everything between:
-          #
-          #   << 'EOF'
-          #
-          # and:
-          #
-          #   EOF
-          #
-          # is executed ON THE LINODE, not on GitHub's runner.
-          ssh -i ~/.ssh/deploy_key "$LINODE_USER@$LINODE_HOST" << 'EOF'
+      # ------------------------------------------------------------
+      # STEP 5: Prepare the website directories on the Linode
+      # ------------------------------------------------------------
+
+      - name: Prepare Linode
+
+        env:
+          LINODE_HOST: ${{ secrets.LINODE_HOST }}
+          LINODE_USER: ${{ secrets.LINODE_USER }}
+
+        run: |
+
+          set -euo pipefail
 
 
-            # Move into the directory containing the website.
-            cd /var/www/html/project/terra-in-cognita/
+          ssh \
+            -i ~/.ssh/deploy_key \
+            "$LINODE_USER@$LINODE_HOST" \
+            << 'EOF'
 
+              set -e
 
-            # Download the latest version of the main branch.
-            #
-            # "origin" refers to the GitHub repository.
-            #
-            # "main" is the branch being deployed.
-            git pull origin main
+              cd /var/www/html/project/terra-in-cognita/
 
+              # Remove the previously generated directories.
+              #
+              # This is intentional:
+              # if an entry or stylesheet is removed from GitHub,
+              # it also disappears from the live website.
 
-          # End of commands executed on the Linode.
+              rm -rf entries
+              rm -rf css
+
+              mkdir -p entries
+              mkdir -p css
+
           EOF
+
+
+      # ------------------------------------------------------------
+      # STEP 6: Deploy index.html
+      # ------------------------------------------------------------
+
+      - name: Deploy index
+
+        env:
+          LINODE_HOST: ${{ secrets.LINODE_HOST }}
+          LINODE_USER: ${{ secrets.LINODE_USER }}
+
+        run: |
+
+          set -euo pipefail
+
+
+          scp \
+            -i ~/.ssh/deploy_key \
+            index.html \
+            "$LINODE_USER@$LINODE_HOST:/var/www/html/project/terra-in-cognita/index.html"
+
+
+      # ------------------------------------------------------------
+      # STEP 7: Deploy generated diary entries
+      # ------------------------------------------------------------
+
+      - name: Deploy diary entries
+
+        env:
+          LINODE_HOST: ${{ secrets.LINODE_HOST }}
+          LINODE_USER: ${{ secrets.LINODE_USER }}
+
+        run: |
+
+          set -euo pipefail
+
+
+          scp \
+            -i ~/.ssh/deploy_key \
+            -r \
+            build/entries/. \
+            "$LINODE_USER@$LINODE_HOST:/var/www/html/project/terra-in-cognita/entries/"
+
+
+      # ------------------------------------------------------------
+      # STEP 8: Deploy CSS
+      # ------------------------------------------------------------
+
+      - name: Deploy CSS
+
+        env:
+          LINODE_HOST: ${{ secrets.LINODE_HOST }}
+          LINODE_USER: ${{ secrets.LINODE_USER }}
+
+        run: |
+
+          set -euo pipefail
+
+
+          scp \
+            -i ~/.ssh/deploy_key \
+            -r \
+            build/css/. \
+            "$LINODE_USER@$LINODE_HOST:/var/www/html/project/terra-in-cognita/css/"
