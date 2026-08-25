@@ -1,13 +1,22 @@
-# The name displayed in GitHub's Actions tab.
 name: Deploy static website
 
 on:
-  push:
-    branches:
-      - main
 
-# Give the GitHub Actions token permission to modify
-# files in the repository.
+  # Deploy once every day at noon in Warsaw.
+  #
+  # GitHub understands the Europe/Warsaw timezone, including
+  # daylight-saving-time changes.
+  schedule:
+    - cron: "0 12 * * *"
+      timezone: "Europe/Warsaw"
+
+
+  # Allow an immediate manual deployment from:
+  #
+  # GitHub → Actions → Deploy static website → Run workflow
+  #
+  workflow_dispatch:
+  
 permissions:
   contents: write
 
