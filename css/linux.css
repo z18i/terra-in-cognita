@@ -2,7 +2,7 @@
    Terra Incognita — Linux pages
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap");
 
 
 /* ============================================================
@@ -22,24 +22,24 @@ body {
     margin: 0;
     min-height: 100vh;
 
-    font-family: "Lato", sans-serif;
-    font-size: 16px;
+    font-family: "Ubuntu", sans-serif;
+    font-size: 14px;
     line-height: 1.6;
 
-    color: #d0c9bd;
+    color: #c9c3b8;
 
     background:
         radial-gradient(
             circle at top,
             #292929 0%,
-            #1e1e1e 55%,
-            #161616 100%
+            #1f1f1f 55%,
+            #171717 100%
         );
 }
 
 
 /* ============================================================
-   Shared header
+   Header
    ============================================================ */
 
 .site-header {
@@ -47,10 +47,10 @@ body {
     top: 0;
     z-index: 10;
 
-    background: rgba(22, 22, 22, 0.94);
+    background: rgba(22, 22, 22, 0.96);
 
     border-bottom:
-        1px solid rgba(255, 255, 255, 0.08);
+        1px solid rgba(255, 255, 255, 0.07);
 
     backdrop-filter: blur(10px);
 }
@@ -60,7 +60,7 @@ body {
 
     margin: 0 auto;
 
-    padding: 14px 30px;
+    padding: 12px 30px;
 
     display: flex;
     justify-content: space-between;
@@ -70,6 +70,7 @@ body {
 .site-title {
     color: #eee7da;
 
+    font-size: 0.9rem;
     font-weight: 700;
 
     text-decoration: none;
@@ -80,17 +81,17 @@ body {
 }
 
 .site-section {
-    color: #8f897e;
+    color: #777168;
 
-    font-size: 0.75rem;
+    font-size: 0.68rem;
 
-    letter-spacing: 0.15em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
 }
 
 
 /* ============================================================
-   Overall layout
+   Layout
    ============================================================ */
 
 .layout {
@@ -102,12 +103,12 @@ body {
     display: grid;
 
     grid-template-columns:
-        210px
+        190px
         minmax(0, 1fr);
 
-    gap: 50px;
+    gap: 45px;
 
-    padding: 50px 30px 70px;
+    padding: 45px 30px 65px;
 }
 
 
@@ -117,7 +118,7 @@ body {
 
 .sidebar {
     position: sticky;
-    top: 82px;
+    top: 75px;
 
     align-self: start;
 
@@ -125,24 +126,24 @@ body {
 }
 
 .sidebar-title {
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 
-    color: #eee7da;
+    color: #ddd6ca;
 
-    font-family: "Playfair Display", serif;
+    font-size: 0.95rem;
+    font-weight: 700;
 
-    font-size: 1.15rem;
     line-height: 1.3;
 }
 
 
-/* Main sidebar navigation */
+/* Command navigation */
 
 .sidebar nav {
     display: flex;
     flex-direction: column;
 
-    gap: 2px;
+    gap: 1px;
 }
 
 .sidebar nav a {
@@ -150,16 +151,14 @@ body {
 
     padding: 4px 0;
 
-    color: #8f897e;
+    color: #777168;
 
     font-family:
-        "SFMono-Regular",
-        "Cascadia Code",
-        "Liberation Mono",
-        Consolas,
+        "Ubuntu Mono",
+        "Ubuntu",
         monospace;
 
-    font-size: 0.82rem;
+    font-size: 0.78rem;
 
     line-height: 1.5;
 
@@ -176,7 +175,7 @@ body {
 .sidebar nav a:hover {
     padding-left: 7px;
 
-    color: #eee7da;
+    color: #ddd6ca;
 
     border-left-color: #8f897e;
 }
@@ -185,20 +184,20 @@ body {
 /* Secondary navigation */
 
 .secondary-navigation {
-    margin-top: 28px;
+    margin-top: 24px;
 
-    padding-top: 20px;
+    padding-top: 17px;
 
     border-top:
         1px solid rgba(255, 255, 255, 0.07);
 }
 
 .secondary-navigation a {
-    font-family: "Lato", sans-serif;
+    font-family: "Ubuntu", sans-serif;
 }
 
 .secondary-navigation a + a {
-    margin-top: 7px;
+    margin-top: 6px;
 }
 
 
@@ -217,18 +216,18 @@ body {
    ============================================================ */
 
 .page-introduction {
-    margin-bottom: 45px;
+    margin-bottom: 35px;
 }
 
 .eyebrow {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 
-    color: #8f897e;
+    color: #827b70;
 
-    font-size: 0.68rem;
+    font-size: 0.62rem;
     font-weight: 700;
 
-    letter-spacing: 0.23em;
+    letter-spacing: 0.2em;
 
     text-transform: uppercase;
 }
@@ -236,111 +235,128 @@ body {
 .page-introduction h1 {
     margin: 0;
 
-    color: #f4efe5;
+    color: #eee7da;
 
-    font-family: "Playfair Display", serif;
+    font-family: "Ubuntu", sans-serif;
 
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2.3rem, 5vw, 3.5rem);
 
-    line-height: 1;
-    font-weight: 600;
+    font-weight: 500;
+
+    line-height: 1.05;
 }
 
 .intro {
     max-width: 620px;
 
-    margin: 18px 0 0;
+    margin: 14px 0 0;
 
-    color: #969087;
+    color: #8f897e;
 
-    font-size: 0.95rem;
-    line-height: 1.7;
+    font-size: 0.88rem;
+    line-height: 1.65;
 }
 
 
 /* ============================================================
-   Command cards
+   COMMAND CARDS
    ============================================================ */
 
+/*
+ * Support both class names so this stylesheet works with the
+ * earlier HTML as well as the newer command-card structure.
+ */
+
+.command,
 .command-card {
-    scroll-margin-top: 95px;
+    scroll-margin-top: 80px;
 
-    margin-bottom: 30px;
+    margin-bottom: 22px;
 
-    padding: 25px 28px 28px;
+    padding: 22px 24px 24px;
 
     background:
         rgba(255, 255, 255, 0.025);
 
     border:
-        1px solid rgba(255, 255, 255, 0.09);
+        1px solid rgba(255, 255, 255, 0.10);
 
     border-radius: 5px;
 
     box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.13);
+        0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
+.command:last-of-type,
 .command-card:last-of-type {
     margin-bottom: 0;
 }
 
 
 /* ============================================================
-   Command header
+   COMMAND HEADER
    ============================================================ */
 
 .command-header {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 
-    padding-bottom: 20px;
+    padding-bottom: 16px;
 
     border-bottom:
-        1px solid rgba(255, 255, 255, 0.08);
+        1px solid rgba(255, 255, 255, 0.07);
 }
 
 
-/* Command name */
+/*
+ * Command name
+ *
+ * Deliberately NOT using the generic inline-code styling here.
+ */
 
 .command-name {
-    display: inline-block;
+    display: block;
 
-    color: #dfcda9;
+    padding: 0;
+
+    background: none;
+
+    color: #e0cfa8;
 
     font-family:
-        "SFMono-Regular",
-        "Cascadia Code",
-        "Liberation Mono",
-        Consolas,
+        "Ubuntu Mono",
+        "Ubuntu",
         monospace;
 
-    font-size: 1.65rem;
+    font-size: 1.55rem !important;
     font-weight: 700;
 
-    line-height: 1.2;
+    line-height: 1.15;
 
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
 }
 
 
-/* Fake shell prompt before command */
+/*
+ * Shell prompt
+ */
 
 .command-name::before {
     content: "$ ";
 
-    color: #746e64;
+    color: #777168;
 }
 
 
-/* Short description next to command */
+/* Short description */
 
 .command-purpose {
-    margin: 8px 0 0;
+    margin: 7px 0 0;
 
-    color: #aaa296;
+    color: #989187;
 
-    font-size: 0.9rem;
-    line-height: 1.6;
+    font-size: 0.86rem;
+
+    line-height: 1.5;
 }
 
 
@@ -349,20 +365,23 @@ body {
    ============================================================ */
 
 .command-section {
-    margin-top: 22px;
+    margin-top: 18px;
 }
 
 .command-section h3 {
-    margin: 0 0 8px;
+    margin: 0 0 7px;
 
     color: #777168;
 
-    font-size: 0.67rem;
+    font-family: "Ubuntu", sans-serif;
+
+    font-size: 0.62rem;
+
     font-weight: 700;
 
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
 
-    line-height: 1.4;
+    line-height: 1.3;
 
     text-transform: uppercase;
 }
@@ -372,8 +391,9 @@ body {
 
     color: #aaa296;
 
-    font-size: 0.9rem;
-    line-height: 1.7;
+    font-size: 0.84rem;
+
+    line-height: 1.65;
 }
 
 
@@ -383,50 +403,54 @@ body {
 
 .flags {
     display: flex;
+
     flex-direction: column;
 
     border-top:
-        1px solid rgba(255, 255, 255, 0.05);
+        1px solid rgba(255, 255, 255, 0.045);
 }
 
 .flag {
     display: grid;
 
     grid-template-columns:
-        75px
+        65px
         minmax(0, 1fr);
 
-    gap: 18px;
+    gap: 16px;
 
-    padding: 9px 0;
+    padding: 7px 0;
 
     border-bottom:
-        1px solid rgba(255, 255, 255, 0.045);
+        1px solid rgba(255, 255, 255, 0.035);
 }
 
 .flag code {
-    color: #d5c6a8;
+    padding: 0;
+
+    background: none;
+
+    color: #d2c3a3;
 
     font-family:
-        "SFMono-Regular",
-        "Cascadia Code",
-        "Liberation Mono",
-        Consolas,
+        "Ubuntu Mono",
+        "Ubuntu",
         monospace;
 
-    font-size: 0.83rem;
+    font-size: 0.78rem;
 }
 
 .flag span {
-    color: #999188;
+    color: #918b82;
 
-    font-size: 0.86rem;
-    line-height: 1.6;
+    font-size: 0.81rem;
+
+    line-height: 1.5;
 }
 
 
 /* ============================================================
-   Console / terminal blocks
+   TERMINAL / CONSOLE
    ============================================================ */
 
 pre {
@@ -437,16 +461,12 @@ pre {
     margin: 0;
 
     padding:
-        38px
-        18px
-        18px;
+        34px
+        16px
+        15px;
 
     background:
-        linear-gradient(
-            180deg,
-            #111111 0%,
-            #0b0b0b 100%
-        );
+        #0d0d0d;
 
     border:
         1px solid rgba(255, 255, 255, 0.08);
@@ -454,44 +474,50 @@ pre {
     border-radius: 4px;
 
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.03),
-        0 7px 18px rgba(0, 0, 0, 0.18);
+        inset 0 1px 0 rgba(255, 255, 255, 0.025),
+        0 5px 14px rgba(0, 0, 0, 0.18);
 }
 
 
-/* Fake terminal window controls */
+/* Terminal window controls */
 
 pre::before {
     content: "●  ●  ●";
 
     position: absolute;
 
-    top: 9px;
-    left: 13px;
+    top: 8px;
+    left: 12px;
 
-    color: #686158;
+    color: #625c54;
 
     font-family: Arial, sans-serif;
 
-    font-size: 0.5rem;
+    font-size: 0.43rem;
 
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
 }
 
 
-/* Actual code */
+/*
+ * Actual terminal text.
+ */
 
 pre code {
-    color: #d6cfc2;
+    display: block;
+
+    padding: 0;
+
+    background: none;
+
+    color: #d4cec3;
 
     font-family:
-        "SFMono-Regular",
-        "Cascadia Code",
-        "Liberation Mono",
-        Consolas,
+        "Ubuntu Mono",
+        "Ubuntu",
         monospace;
 
-    font-size: 0.82rem;
+    font-size: 0.78rem;
 
     line-height: 1.65;
 
@@ -503,26 +529,29 @@ pre code {
    Inline code
    ============================================================ */
 
-:not(pre) > code {
+/*
+ * This is deliberately narrow and does NOT affect .command-name.
+ */
+
+.command-section :not(pre) > code,
+.content p :not(pre) > code {
     padding:
-        0.1em
-        0.3em;
+        0.08em
+        0.25em;
 
     background:
-        rgba(255, 255, 255, 0.06);
+        rgba(255, 255, 255, 0.05);
 
-    border-radius: 3px;
+    border-radius: 2px;
 
-    color: #d5c6a8;
+    color: #d2c3a3;
 
     font-family:
-        "SFMono-Regular",
-        "Cascadia Code",
-        "Liberation Mono",
-        Consolas,
+        "Ubuntu Mono",
+        "Ubuntu",
         monospace;
 
-    font-size: 0.86em;
+    font-size: 0.82em;
 }
 
 
@@ -531,7 +560,7 @@ pre code {
    ============================================================ */
 
 .content a {
-    color: #b8aa93;
+    color: #b4a68d;
 
     text-decoration-thickness: 1px;
 
@@ -539,7 +568,7 @@ pre code {
 }
 
 .content a:hover {
-    color: #f4efe5;
+    color: #eee7da;
 }
 
 
@@ -547,23 +576,19 @@ pre code {
    Linux overview page
    ============================================================ */
 
-/*
- * These styles are used by linux/index.html.
- */
-
 .topic-list {
     display: grid;
 
     grid-template-columns:
         repeat(2, minmax(0, 1fr));
 
-    gap: 14px;
+    gap: 12px;
 }
 
 .topic-card {
     display: block;
 
-    padding: 20px;
+    padding: 18px;
 
     background:
         rgba(255, 255, 255, 0.025);
@@ -585,36 +610,34 @@ pre code {
 
 .topic-card:hover {
     background:
-        rgba(255, 255, 255, 0.055);
+        rgba(255, 255, 255, 0.05);
 
     border-color:
-        rgba(255, 255, 255, 0.15);
+        rgba(255, 255, 255, 0.14);
 
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 .topic-title {
     display: block;
 
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 
-    color: #eee7da;
+    color: #ddd6ca;
 
-    font-family: "Playfair Display", serif;
+    font-size: 0.95rem;
 
-    font-size: 1.15rem;
-
-    line-height: 1.3;
+    font-weight: 700;
 }
 
 .topic-description {
     display: block;
 
-    color: #8f897e;
+    color: #858077;
 
-    font-size: 0.86rem;
+    font-size: 0.79rem;
 
-    line-height: 1.55;
+    line-height: 1.5;
 }
 
 
@@ -623,32 +646,43 @@ pre code {
    ============================================================ */
 
 .reference {
-    margin: 22px 0;
+    margin: 18px 0;
 }
 
 .reference-row {
     display: grid;
 
     grid-template-columns:
-        120px
+        100px
         minmax(0, 1fr);
 
-    gap: 20px;
+    gap: 18px;
 
-    padding: 10px 0;
+    padding: 8px 0;
 
     border-bottom:
-        1px solid rgba(255, 255, 255, 0.05);
+        1px solid rgba(255, 255, 255, 0.04);
 }
 
 .reference-row code {
-    color: #d5c6a8;
+    padding: 0;
+
+    background: none;
+
+    color: #d2c3a3;
+
+    font-family:
+        "Ubuntu Mono",
+        "Ubuntu",
+        monospace;
+
+    font-size: 0.8rem;
 }
 
 .reference-row span {
-    color: #999188;
+    color: #8d877e;
 
-    font-size: 0.88rem;
+    font-size: 0.81rem;
 }
 
 
@@ -657,11 +691,10 @@ pre code {
    ============================================================ */
 
 .content h2 {
-    color: #eee7da;
+    color: #ddd6ca;
 
-    font-family: "Playfair Display", serif;
+    font-size: 1.45rem;
 
-    font-size: 1.7rem;
     font-weight: 500;
 
     line-height: 1.25;
@@ -670,10 +703,11 @@ pre code {
 .content h3 {
     color: #777168;
 
-    font-size: 0.67rem;
+    font-size: 0.62rem;
+
     font-weight: 700;
 
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
 
     text-transform: uppercase;
 }
@@ -681,7 +715,7 @@ pre code {
 .content p {
     color: #aaa296;
 
-    font-size: 0.9rem;
+    font-size: 0.84rem;
 }
 
 
@@ -690,31 +724,31 @@ pre code {
    ============================================================ */
 
 .page-footer {
-    margin-top: 45px;
+    margin-top: 40px;
 
-    padding-top: 20px;
+    padding-top: 18px;
 
     border-top:
-        1px solid rgba(255, 255, 255, 0.07);
+        1px solid rgba(255, 255, 255, 0.06);
 
-    color: #777168;
+    color: #706a62;
 
-    font-size: 0.82rem;
+    font-size: 0.76rem;
 }
 
 .page-footer a {
-    color: #8f897e;
+    color: #858077;
 
     text-decoration: none;
 }
 
 .page-footer a:hover {
-    color: #eee7da;
+    color: #ddd6ca;
 }
 
 
 /* ============================================================
-   Mobile — tablet
+   Tablet
    ============================================================ */
 
 @media (max-width: 800px) {
@@ -722,9 +756,9 @@ pre code {
     .layout {
         grid-template-columns: 1fr;
 
-        gap: 35px;
+        gap: 28px;
 
-        padding-top: 35px;
+        padding-top: 32px;
     }
 
     .sidebar {
@@ -737,11 +771,11 @@ pre code {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
 
-        gap: 2px 20px;
+        gap: 1px 18px;
     }
 
     .secondary-navigation {
-        margin-top: 20px;
+        margin-top: 18px;
     }
 
     .topic-list {
@@ -751,35 +785,38 @@ pre code {
 
 
 /* ============================================================
-   Mobile — phone
+   Phone
    ============================================================ */
 
 @media (max-width: 500px) {
 
     .site-header-inner {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 18px;
+        padding-right: 18px;
     }
 
     .layout {
-        padding-left: 15px;
-        padding-right: 15px;
+        padding:
+            30px
+            12px
+            50px;
     }
 
+    .command,
     .command-card {
         padding:
-            20px
             18px
-            22px;
+            16px
+            20px;
     }
 
     .command-name {
-        font-size: 1.45rem;
+        font-size: 1.35rem !important;
     }
 
     .flag {
         grid-template-columns:
-            60px
+            55px
             minmax(0, 1fr);
 
         gap: 10px;
@@ -787,13 +824,13 @@ pre code {
 
     pre {
         padding:
-            37px
-            12px
-            14px;
+            34px
+            11px
+            13px;
     }
 
     pre code {
-        font-size: 0.78rem;
+        font-size: 0.74rem;
     }
 
     .sidebar nav {
@@ -802,9 +839,9 @@ pre code {
 
     .reference-row {
         grid-template-columns:
-            80px
+            75px
             minmax(0, 1fr);
 
-        gap: 12px;
+        gap: 10px;
     }
 }
