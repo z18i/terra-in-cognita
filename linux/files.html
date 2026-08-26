@@ -1,78 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Files &amp; directories — Linux</title>
-    <link rel="stylesheet" href="../css/linux.css">
+
+    <link
+        rel="stylesheet"
+        href="../css/linux.css"
+    >
 </head>
 
 <body>
+
     <header class="site-header">
+
         <div class="site-header-inner">
-            <a href="../index.html" class="site-title">Terra Incognita</a>
-            <span class="site-section">Linux</span>
+
+            <a
+                href="../index.html"
+                class="site-title"
+            >
+                Terra Incognita
+            </a>
+
+            <span class="site-section">
+                Linux
+            </span>
+
         </div>
+
     </header>
 
+
     <div class="layout">
+
+        <!-- =====================================================
+             COMMAND NAVIGATION
+             ===================================================== -->
+
         <aside class="sidebar">
-<!--            <div class="sidebar-title">Linux notes</div>    -->
+
+            <div class="sidebar-title">
+                Files &amp; directories
+            </div>
+
             <nav>
-                <a href="index.html">Overview</a>
-                <a href="files.html">Files &amp; directories</a>
-                <a href="text.html">Text manipulation</a>
-                <a href="finding.html">Finding things</a>
-                <a href="wildcards.html">Wildcards &amp; globbing</a>
-                <a href="permissions.html">Permissions</a>
-                <a href="processes.html">Processes &amp; services</a>
-                <a href="networking.html">Networking</a>
-                <a href="ssh.html">SSH</a>
-                <a href="git.html">Git</a>
-                <a href="commands.html">Useful commands</a>
+
+                <a href="#pwd">
+                    pwd
+                </a>
+
+                <a href="#ls">
+                    ls
+                </a>
+
+                <a href="#cd">
+                    cd
+                </a>
+
+                <a href="#mkdir">
+                    mkdir
+                </a>
+
+                <a href="#touch">
+                    touch
+                </a>
+
+                <a href="#cp">
+                    cp
+                </a>
+
+                <a href="#mv">
+                    mv
+                </a>
+
+                <a href="#rm">
+                    rm
+                </a>
+
             </nav>
+
+
+            <nav class="secondary-navigation">
+
+                <a href="index.html">
+                    ← Linux overview
+                </a>
+
+                <a href="../index.html">
+                    ← Diary
+                </a>
+
+            </nav>
+
         </aside>
 
 
+        <!-- =====================================================
+             CONTENT
+             ===================================================== -->
+
         <main class="content">
+
             <header class="page-introduction">
-                <div class="eyebrow">LINUX / FILES &amp; DIRECTORIES</div>
-                <h1>Files &amp; directories</h1>
-                <p class="intro">Commands for navigating, creating, copying,
-                    moving and removing things in the filesystem.</p>
+
+                <div class="eyebrow">
+                    LINUX / FILES &amp; DIRECTORIES
+                </div>
+
+                <h1>
+                    Files &amp; directories
+                </h1>
+
+                <p class="intro">
+                    Commands for navigating, creating, copying,
+                    moving and removing things in the filesystem.
+                </p>
+
             </header>
 
+
             <!-- =================================================
-                 COMMAND: pwd
+                 pwd
                  ================================================= -->
 
-            <section class="command">
+            <section
+                class="command-card"
+                id="pwd"
+            >
+
                 <header class="command-header">
-                    <h2>
+
+                    <code class="command-name">
                         pwd
-                    </h2>
+                    </code>
+
                     <p class="command-purpose">
                         Print the current working directory.
                     </p>
+
                 </header>
 
+
                 <div class="command-section">
+
                     <h3>
                         Description
                     </h3>
+
                     <p>
                         Displays the absolute path of the directory
                         you are currently working in.
                     </p>
+
                 </div>
 
+
                 <div class="command-section">
+
                     <h3>
                         Useful flags
                     </h3>
+
                     <div class="flags">
+
                         <div class="flag">
                             <code>-L</code>
+
                             <span>
                                 Use the logical path, including
                                 symbolic links.
@@ -81,65 +182,88 @@
 
                         <div class="flag">
                             <code>-P</code>
+
                             <span>
                                 Use the physical path and resolve
                                 symbolic links.
                             </span>
                         </div>
+
                     </div>
+
                 </div>
 
+
                 <div class="command-section">
+
                     <h3>
                         Example
                     </h3>
+
                     <pre><code>$ pwd
 /var/www/project</code></pre>
+
                 </div>
+
             </section>
 
 
             <!-- =================================================
-                 COMMAND: ls
+                 ls
                  ================================================= -->
 
-            <section class="command">
+            <section
+                class="command-card"
+                id="ls"
+            >
+
                 <header class="command-header">
-                    <h2>
+
+                    <code class="command-name">
                         ls
-                    </h2>
+                    </code>
+
                     <p class="command-purpose">
                         List files and directories.
                     </p>
+
                 </header>
 
+
                 <div class="command-section">
+
                     <h3>
                         Description
                     </h3>
+
                     <p>
                         Displays the contents of a directory.
-                        By default, hidden files are omitted.
+                        Hidden files are omitted unless requested.
                     </p>
+
                 </div>
 
 
                 <div class="command-section">
+
                     <h3>
                         Useful flags
                     </h3>
+
                     <div class="flags">
+
                         <div class="flag">
                             <code>-l</code>
+
                             <span>
-                                Use long format and show permissions,
-                                owner, size and timestamps.
+                                Long format; show permissions, owner,
+                                size and timestamps.
                             </span>
                         </div>
 
-
                         <div class="flag">
                             <code>-a</code>
+
                             <span>
                                 Include hidden files.
                             </span>
@@ -147,23 +271,27 @@
 
                         <div class="flag">
                             <code>-h</code>
+
                             <span>
-                                Show file sizes in a human-readable
-                                format.
+                                Display sizes in human-readable form.
                             </span>
                         </div>
 
                         <div class="flag">
                             <code>-t</code>
+
                             <span>
                                 Sort by modification time.
                             </span>
                         </div>
+
                     </div>
+
                 </div>
 
 
                 <div class="command-section">
+
                     <h3>
                         Example
                     </h3>
@@ -180,33 +308,48 @@ drwxr-xr-x  2 user user 4.0K Aug 25 17:42 scripts</code></pre>
 
             </section>
 
+
             <!-- =================================================
-                 COMMAND: cd
+                 cd
                  ================================================= -->
 
-            <section class="command">
+            <section
+                class="command-card"
+                id="cd"
+            >
+
                 <header class="command-header">
-                    <h2>
+
+                    <code class="command-name">
                         cd
-                    </h2>
+                    </code>
+
                     <p class="command-purpose">
                         Change the current working directory.
                     </p>
+
                 </header>
 
+
                 <div class="command-section">
+
                     <h3>
                         Description
                     </h3>
+
                     <p>
                         Moves the shell into another directory.
                     </p>
+
                 </div>
 
+
                 <div class="command-section">
+
                     <h3>
                         Useful flags
                     </h3>
+
                     <div class="flags">
                         <div class="flag">
                             <code>~</code>
@@ -229,76 +372,40 @@ drwxr-xr-x  2 user user 4.0K Aug 25 17:42 scripts</code></pre>
                             </span>
                         </div>
                     </div>
+
                 </div>
 
 
                 <div class="command-section">
+
                     <h3>
                         Example
                     </h3>
+
                     <pre><code>$ cd /var/www/project
 $ pwd
 /var/www/project
 
 $ cd -
 /home/user</code></pre>
+
                 </div>
+
             </section>
 
 
-            <!-- =================================================
-                 COMMAND: mkdir
-                 ================================================= -->
-
-            <section class="command">
-
-                <header class="command-header">
-                    <h2>
-                        mkdir
-                    </h2>
-                    <p class="command-purpose">
-                        Create directories.
-                    </p>
-                </header>
-
-                <div class="command-section">
-                    <h3>
-                        Description
-                    </h3>
-                    <p>
-                        Creates one or more directories.
-                    </p>
-                </div>
-
-                <div class="command-section">
-                    <h3>
-                        Useful flags
-                    </h3>
-                    <div class="flags">
-                        <div class="flag">
-                            <code>-p</code>
-                            <span>
-                                Create parent directories as needed
-                                and don't complain if they already
-                                exist.
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="command-section">
-                    <h3>Example</h3>
-                    <pre><code>$ mkdir -p project/scripts/archive
-$ ls project/scripts
-archive</code></pre>
-                </div>
-            </section>
             <footer class="page-footer">
-                <a href="index.html">← Linux notes</a>
+
+                <a href="index.html">
+                    ← Linux overview
+                </a>
+
             </footer>
+
         </main>
+
     </div>
+
 </body>
 
 </html>
