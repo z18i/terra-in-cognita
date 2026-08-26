@@ -341,7 +341,7 @@ body {
  */
 
 .command-name::before {
-    content: "$ ";
+    content: "> ";
 
     color: #777168;
 }
@@ -416,7 +416,7 @@ body {
         max-content
         minmax(0, 1fr);
 
-    gap: 18px;
+    gap: 8px;
 
     padding: 7px 0;
 
