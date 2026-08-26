@@ -403,7 +403,6 @@ body {
 
 .flags {
     display: flex;
-
     flex-direction: column;
 
     border-top:
@@ -414,10 +413,10 @@ body {
     display: grid;
 
     grid-template-columns:
-        65px
+        max-content
         minmax(0, 1fr);
 
-    gap: 16px;
+    gap: 18px;
 
     padding: 7px 0;
 
@@ -426,9 +425,18 @@ body {
 }
 
 .flag code {
-    padding: 0;
+    display: inline-block;
 
-    background: none;
+    min-width: 48px;
+
+    padding:
+        2px
+        8px;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    border-radius: 2px;
 
     color: #d2c3a3;
 
@@ -449,21 +457,19 @@ body {
 }
 
 
+
 /* ============================================================
    TERMINAL / CONSOLE
    ============================================================ */
 
 pre {
-    position: relative;
-
     overflow-x: auto;
 
     margin: 0;
 
     padding:
-        34px
-        16px
-        15px;
+        14px
+        16px;
 
     background:
         #0d0d0d;
@@ -479,28 +485,10 @@ pre {
 }
 
 
-/* Terminal window controls */
-
-pre::before {
-    content: "●  ●  ●";
-
-    position: absolute;
-
-    top: 8px;
-    left: 12px;
-
-    color: #625c54;
-
-    font-family: Arial, sans-serif;
-
-    font-size: 0.43rem;
-
-    letter-spacing: 0.1em;
-}
-
-
 /*
  * Actual terminal text.
+ *
+ * No fake window controls are added here.
  */
 
 pre code {
@@ -523,7 +511,6 @@ pre code {
 
     white-space: pre;
 }
-
 
 /* ============================================================
    Inline code
