@@ -1,12 +1,1061 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linux: Wildcards &amp; globbing</title>
     <link rel="stylesheet" href="../css/linux.css">
 </head>
+
 <body>
-Wildcards & globbing Shell patterns such as *, ?, character classes and file matching. 
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a href="../index.html" class="site-title">
+                Terra Incognita
+            </a>
+            <span class="site-section">
+                Linux
+            </span>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- =====================================================
+             COMMAND NAVIGATION
+             ===================================================== -->
+        <aside class="sidebar">
+            <div class="sidebar-title">
+                Files &amp; directories
+            </div>
+            <nav>
+                <a href="#overview">overview</a>
+                <a href="#asterisk">*</a>
+                <a href="#question">?</a>
+                <a href="#brackets">[]</a>
+                <a href="#negation">[!]</a>
+                <a href="#braces">{}</a>
+                <a href="#recursive">**</a>
+                <a href="#hidden">hidden files</a>
+                <a href="#examples">examples</a>
+            </nav>
+            <nav class="secondary-navigation">
+                <a href="index.html">
+                    ← Linux
+                </a>
+                <a href="../index.html">
+                    ← Diary
+                </a>
+            </nav>
+        </aside>
+
+        <!-- =====================================================
+             CONTENT
+             ===================================================== -->
+
+        <main class="content">
+            <header class="page-introduction">
+                <div class="eyebrow">
+                    LINUX / WILDCARDS &amp; GLOBBING
+                </div>
+                <h1>
+                    Wildcards &amp; globbing
+                </h1>
+                <p class="intro">
+                    Patterns that let the shell match groups of
+                    filenames without having to type every name
+                    individually.
+                </p>
+            </header>
+
+
+           <!-- =================================================
+                 Overview
+                 ================================================= -->
+
+            <section
+                class="command-card"
+                id="overview"
+            >
+
+                <header class="command-header">
+
+                    <code class="command-name">
+                        globbing
+                    </code>
+
+                    <p class="command-purpose">
+                        Match filenames using shell patterns.
+                    </p>
+
+                </header>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Description
+                    </h3>
+
+                    <p>
+                        Globbing is the process where the shell
+                        expands a pattern such as
+                        <code>*.txt</code> into matching filenames
+                        before a command is executed.
+                    </p>
+
+                    <p>
+                        This means commands such as
+                        <code>rm *.tmp</code> can operate on many
+                        files without requiring their names to be
+                        written individually.
+                    </p>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Important
+                    </h3>
+
+                    <p>
+                        Globbing is performed by the shell, not by
+                        commands such as <code>ls</code> or
+                        <code>rm</code>. The command usually receives
+                        the expanded filenames as arguments.
+                    </p>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Example
+                    </h3>
+
+                    <pre><code>$ ls *.txt
+notes.txt
+todo.txt
+readme.txt</code></pre>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 *
+                 ================================================= -->
+
+            <section
+                class="command-card"
+                id="asterisk"
+            >
+
+                <header class="command-header">
+
+                    <code class="command-name">
+                        *
+                    </code>
+
+                    <p class="command-purpose">
+                        Match zero or more characters.
+                    </p>
+
+                </header>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Description
+                    </h3>
+
+                    <p>
+                        The asterisk matches any sequence of
+                        characters within a filename, including no
+                        characters at all.
+                    </p>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Useful patterns
+                    </h3>
+
+                    <div class="flags">
+
+                        <div class="flag">
+                            <code>*.txt</code>
+
+                            <span>
+                                Match every filename ending in
+                                <code>.txt</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>log*</code>
+
+                            <span>
+                                Match filenames beginning with
+                                <code>log</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>*backup*</code>
+
+                            <span>
+                                Match filenames containing
+                                <code>backup</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>*</code>
+
+                            <span>
+                                Match ordinary visible filenames in
+                                the current directory.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Example
+                    </h3>
+
+                    <pre><code>$ ls *.jpg
+photo.jpg
+holiday.jpg
+portrait.jpg
+
+$ rm *.tmp</code></pre>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ?
+                 ================================================= -->
+
+            <section
+                class="command-card"
+                id="question"
+            >
+
+                <header class="command-header">
+
+                    <code class="command-name">
+                        ?
+                    </code>
+
+                    <p class="command-purpose">
+                        Match exactly one character.
+                    </p>
+
+                </header>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Description
+                    </h3>
+
+                    <p>
+                        The question mark matches exactly one
+                        character in a filename.
+                    </p>
+
+                    <p>
+                        Unlike <code>*</code>, it cannot match zero
+                        characters.
+                    </p>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Useful patterns
+                    </h3>
+
+                    <div class="flags">
+
+                        <div class="flag">
+                            <code>file?.txt</code>
+
+                            <span>
+                                Match <code>file1.txt</code> and
+                                <code>fileA.txt</code>, but not
+                                <code>file10.txt</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>?.jpg</code>
+
+                            <span>
+                                Match filenames containing exactly
+                                one character before <code>.jpg</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>data??.csv</code>
+
+                            <span>
+                                Match exactly two characters after
+                                <code>data</code>.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Example
+                    </h3>
+
+                    <pre><code>$ ls file?.txt
+file1.txt
+file2.txt
+fileA.txt</code></pre>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 []
+                 ================================================= -->
+
+            <section
+                class="command-card"
+                id="brackets"
+            >
+
+                <header class="command-header">
+
+                    <code class="command-name">
+                        []
+                    </code>
+
+                    <p class="command-purpose">
+                        Match one character from a set or range.
+                    </p>
+
+                </header>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Description
+                    </h3>
+
+                    <p>
+                        Square brackets match exactly one character
+                        from the characters listed inside them.
+                    </p>
+
+                    <p>
+                        A range can be written with a hyphen, such as
+                        <code>[0-9]</code> or <code>[a-z]</code>.
+                    </p>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Useful patterns
+                    </h3>
+
+                    <div class="flags">
+
+                        <div class="flag">
+                            <code>file[123].txt</code>
+
+                            <span>
+                                Match <code>file1.txt</code>,
+                                <code>file2.txt</code>, or
+                                <code>file3.txt</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>file[0-9].txt</code>
+
+                            <span>
+                                Match a single digit from
+                                <code>0</code> through <code>9</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>[a-z]*</code>
+
+                            <span>
+                                Match filenames beginning with a
+                                lowercase letter.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>[abc]*</code>
+
+                            <span>
+                                Match filenames beginning with
+                                <code>a</code>, <code>b</code>, or
+                                <code>c</code>.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Example
+                    </h3>
+
+                    <pre><code>$ ls image[0-9].png
+image1.png
+image2.png
+image3.png</code></pre>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 [!]
+                 ================================================= -->
+
+            <section
+                class="command-card"
+                id="negation"
+            >
+
+                <header class="command-header">
+
+                    <code class="command-name">
+                        [!]
+                    </code>
+
+                    <p class="command-purpose">
+                        Match a character not in a set.
+                    </p>
+
+                </header>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Description
+                    </h3>
+
+                    <p>
+                        When <code>!</code> appears immediately after
+                        the opening bracket, it negates the character
+                        set.
+                    </p>
+
+                    <p>
+                        The pattern matches one character that is
+                        <strong>not</strong> one of the characters
+                        listed.
+                    </p>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Useful patterns
+                    </h3>
+
+                    <div class="flags">
+
+                        <div class="flag">
+                            <code>file[!0].txt</code>
+
+                            <span>
+                                Match one character that is not
+                                <code>0</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>[!a-z]*</code>
+
+                            <span>
+                                Match filenames whose first character
+                                is not a lowercase letter.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>[!0-9]*</code>
+
+                            <span>
+                                Match filenames that do not begin
+                                with a digit.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Note
+                    </h3>
+
+                    <p>
+                        Bash also accepts <code>[^...]</code> as a
+                        negated character class. For portable shell
+                        scripts, <code>[!...]</code> is the more
+                        traditional glob syntax.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 {}
+                 ================================================= -->
+
+            <section
+                class="command-card"
+                id="braces"
+            >
+
+                <header class="command-header">
+
+                    <code class="command-name">
+                        {}
+                    </code>
+
+                    <p class="command-purpose">
+                        Generate multiple strings with brace expansion.
+                    </p>
+
+                </header>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Description
+                    </h3>
+
+                    <p>
+                        Brace expansion is related to filename
+                        patterns but is technically different from
+                        globbing.
+                    </p>
+
+                    <p>
+                        The shell expands the alternatives inside
+                        braces before pathname expansion takes place.
+                    </p>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Useful patterns
+                    </h3>
+
+                    <div class="flags">
+
+                        <div class="flag">
+                            <code>{a,b,c}</code>
+
+                            <span>
+                                Generate three alternatives:
+                                <code>a</code>, <code>b</code>, and
+                                <code>c</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>file{1,2,3}.txt</code>
+
+                            <span>
+                                Generate <code>file1.txt</code>,
+                                <code>file2.txt</code>, and
+                                <code>file3.txt</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>{1..5}</code>
+
+                            <span>
+                                Generate the sequence from
+                                <code>1</code> through <code>5</code>.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Example
+                    </h3>
+
+                    <pre><code>$ mkdir project_{dev,test,prod}
+
+$ ls
+project_dev
+project_prod
+project_test
+
+$ touch file{1..3}.txt
+
+$ ls
+file1.txt
+file2.txt
+file3.txt</code></pre>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 **
+                 ================================================= -->
+
+            <section
+                class="command-card"
+                id="recursive"
+            >
+
+                <header class="command-header">
+
+                    <code class="command-name">
+                        **
+                    </code>
+
+                    <p class="command-purpose">
+                        Match files recursively through directories.
+                    </p>
+
+                </header>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Description
+                    </h3>
+
+                    <p>
+                        Bash can use <code>**</code> for recursive
+                        globbing when the <code>globstar</code> shell
+                        option is enabled.
+                    </p>
+
+                    <p>
+                        With <code>globstar</code> enabled,
+                        <code>**</code> can match directories at
+                        multiple levels.
+                    </p>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Enable it
+                    </h3>
+
+                    <pre><code>$ shopt -s globstar</code></pre>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Example
+                    </h3>
+
+                    <pre><code>$ ls **/*.txt
+notes.txt
+docs/readme.txt
+docs/linux/commands.txt
+archive/old/notes.txt</code></pre>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Important
+                    </h3>
+
+                    <p>
+                        <code>**</code> is not universally recursive
+                        in every shell. Its behavior depends on the
+                        shell and its configuration. The example above
+                        refers specifically to Bash with
+                        <code>globstar</code> enabled.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Hidden files
+                 ================================================= -->
+
+            <section
+                class="command-card"
+                id="hidden"
+            >
+
+                <header class="command-header">
+
+                    <code class="command-name">
+                        dotfiles
+                    </code>
+
+                    <p class="command-purpose">
+                        Understand why ordinary globs ignore hidden files.
+                    </p>
+
+                </header>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Description
+                    </h3>
+
+                    <p>
+                        In typical Unix shells, filenames beginning
+                        with <code>.</code> are hidden. A pattern such
+                        as <code>*</code> does not normally match them.
+                    </p>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Example
+                    </h3>
+
+                    <pre><code>$ ls *
+notes.txt
+script.sh
+documents
+
+$ ls -a
+.
+..
+.bashrc
+.config
+notes.txt
+script.sh
+documents</code></pre>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Matching dotfiles
+                    </h3>
+
+                    <p>
+                        A pattern beginning with a literal dot can
+                        match hidden files.
+                    </p>
+
+                    <pre><code>$ ls .*
+.bashrc
+.profile
+.config</code></pre>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Caution
+                    </h3>
+
+                    <p>
+                        Be careful with broad patterns involving
+                        hidden files. Commands that modify or remove
+                        matched files can have much larger effects
+                        than expected.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Practical examples
+                 ================================================= -->
+
+            <section
+                class="command-card"
+                id="examples"
+            >
+
+                <header class="command-header">
+
+                    <code class="command-name">
+                        examples
+                    </code>
+
+                    <p class="command-purpose">
+                        Combine patterns with everyday commands.
+                    </p>
+
+                </header>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        List files
+                    </h3>
+
+                    <pre><code>$ ls *.txt
+$ ls image?.png
+$ ls [0-9]*.log</code></pre>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Copy files
+                    </h3>
+
+                    <pre><code>$ cp *.jpg images/
+$ cp report[0-9].pdf archive/</code></pre>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Move files
+                    </h3>
+
+                    <pre><code>$ mv *.bak backup/
+$ mv draft?.txt drafts/</code></pre>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Remove files
+                    </h3>
+
+                    <pre><code>$ rm *.tmp
+$ rm test[0-9].log</code></pre>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Combining patterns
+                    </h3>
+
+                    <p>
+                        Patterns can be combined to make more precise
+                        matches.
+                    </p>
+
+                    <pre><code>$ ls project-*.txt
+$ ls image[0-9][0-9].png
+$ ls backup-??-*.tar.gz</code></pre>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Wildcards vs regex
+                 ================================================= -->
+
+            <section class="command-card">
+
+                <header class="command-header">
+
+                    <code class="command-name">
+                        glob-vs-regex
+                    </code>
+
+                    <p class="command-purpose">
+                        Do not confuse shell globs with regular expressions.
+                    </p>
+
+                </header>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        The difference
+                    </h3>
+
+                    <p>
+                        Shell globs and regular expressions both
+                        describe patterns, but they use different
+                        syntax and are interpreted by different
+                        systems.
+                    </p>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Common examples
+                    </h3>
+
+                    <div class="flags">
+
+                        <div class="flag">
+                            <code>*.txt</code>
+
+                            <span>
+                                Glob: any filename ending in
+                                <code>.txt</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>.*</code>
+
+                            <span>
+                                Glob: filenames beginning with a
+                                literal dot.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>.*\.txt$</code>
+
+                            <span>
+                                Regex: a pattern matching a dot,
+                                followed by any characters and
+                                ending in <code>.txt</code>.
+                            </span>
+                        </div>
+
+                        <div class="flag">
+                            <code>^file[0-9]+$</code>
+
+                            <span>
+                                Regex: <code>file</code> followed by
+                                one or more digits, with nothing else.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="command-section">
+
+                    <h3>
+                        Remember
+                    </h3>
+
+                    <p>
+                        <code>*</code> in a shell glob means "any
+                        sequence of filename characters", while
+                        <code>*</code> in a regular expression means
+                        "zero or more repetitions of the preceding
+                        expression".
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            
+            <footer class="page-footer">
+
+                <a href="index.html">
+                    ← Linux
+                </a>
+            </footer>
+        </main>
+    </div>
 </body>
+
 </html>
