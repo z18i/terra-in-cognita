@@ -5,7 +5,7 @@ on:
 
   # Deploy once every day at noon in Europe/Warsaw.
   schedule:
-    - cron: "0 12 * * *"
+    - cron: "7 12 * * *"
       timezone: "Europe/Warsaw"
 
 
