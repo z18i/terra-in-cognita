@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux: Operating concepts</title>
+    <link rel="stylesheet" href="../css/linux.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a href="../index.html" class="site-title">
+                Terra Incognita
+            </a>
+            <span class="site-section">
+                Linux
+            </span>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- =====================================================
+             COMMAND NAVIGATION
+             ===================================================== -->
+        <aside class="sidebar">
+            <div class="sidebar-title">
+                Finding things
+            </div>
+            <nav>
+                <a href="#stdout">Standard Input, Standard Output, Standard Error</a>
+                <a href="#ADD_CONCEPT_NAME">ADD_CONCEPT_NAME</a>
+                <a href="#ADD_CONCEPT_NAME">ADD_CONCEPT_NAME</a>
+                <a href="#ADD_CONCEPT_NAME">ADD_CONCEPT_NAME</a>
+                <a href="#ADD_CONCEPT_NAME">ADD_CONCEPT_NAME</a>
+                <a href="#ADD_CONCEPT_NAME">ADD_CONCEPT_NAME</a>
+
+
+            </nav>
+            <nav class="secondary-navigation">
+                <a href="index.html">
+                    ← Linux
+                </a>
+                <a href="../index.html">
+                    ← Diary
+                </a>
+            </nav>
+        </aside>
+
+        <!-- =====================================================
+             CONTENT
+             ===================================================== -->
+
+        <main class="content">
+            <header class="page-introduction">
+                <div class="eyebrow">
+                    LINUX CONCEPTS
+                </div>
+                <h1>
+                    How Linux operates
+                </h1>
+                <p class="intro">
+                    Commands for finding, greping, and other ways of locating files and content.
+                </p>
+            </header>
+
+           <!-- =================================================
+                 STANDART OUTPUT
+                 ================================================= -->
+
+            <section class="command-card" id="stdout">
+                <header class="command-header">
+                    <code class="command-name">Standard Input, Standard Output, Standard Error</code>
+                    <p class="command-purpose">
+                        How to have a dialog with shell.
+                    </p>
+                </header>
+
+                <div class="command-section">
+                    <h3>Description</h3>
+                    <p>
+                        Standard Input (<code>0</code>, <code>stdin</code>), Standard Output (<code>1</code>, <code>stdout</code>), and Standard Error (<code>2</code>, <code>stderr</code>) are the words we and the shell use to communicate.
+                      Typically, we use <code>stdin</code> as a way to ask the shell to do specific things, and it replies with <code>stdout</code> or <code>sterr</code>.
+                    </p>
+                </div>
+
+                <div class="command-section">
+                    <h3>Useful flags</h3>
+                    <div class="flags">
+                        <div class="flag">
+                            <code>></code>
+                            <span>
+                                Redirect stdout to a file, overwriting it.
+                            </span>
+                        </div>
+                      <div class="flag">
+                            <code>>></code>
+                            <span>
+                                Redirect stdout to a file, appending to the end.
+                            </span>
+                        </div>
+                      <div class="flag">
+                            <code><</code>
+                            <span>
+                                Redirect stdin to read from a file instead of the keyboard.
+                            </span>
+                        </div>
+                      <div class="flag">
+                            <code>2></code>
+                            <span>
+                                Redirect stderr to a file, overwriting it.
+                            </span>
+                        </div>
+                      <div class="flag">
+                            <code>2>></code>
+                            <span>
+                                Redirect stderr to a file, appending to the end.
+                            </span>
+                        </div>
+                      <div class="flag">
+                            <code>2>&1</code>
+                            <span>
+                                Duplicate stderr onto wherever stdout currently points.
+                            </span>
+                        </div>
+                      <div class="flag">
+                            <code>2>&> / &>></code>
+                            <span>
+                                Bash shortcut for sending both stdout and stderr to a file (overwrite / append).
+                            </span>
+                        </div>
+                      <div class="flag">
+                            <code>|</code>
+                            <span>
+                                Connect one command’s stdout directly to the next command’s stdin.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="command-section">
+                    <h3>Example</h3>
+                    <pre><code>$ ADD EXAMPLES</code></pre>
+                </div>
+              
+                <div class="command-section">
+                    <h3>Note</h3>
+                    <p>
+                        Bash also accepts <code>[^...]</code> as a
+                        negated character class. For portable shell
+                        scripts, <code>[!...]</code> is the more
+                        traditional glob syntax.
+                    </p>
+                </div>
+            </section>
+
+
+          
+           <!-- =================================================
+                 PLACEHOLDER
+                 ================================================= -->
+                      <section class="command-card" id="ADD_CONCEPT_NAME">
+                <header class="command-header">
+                    <code class="command-name">ADD_CONCEPT_NAME</code>
+                    <p class="command-purpose">
+                        Add concept function.
+                    </p>
+                </header>
+
+                <div class="command-section">
+                    <h3>Description</h3>
+                    <p>
+                        Add convepts's description.
+                    </p>
+                </div>
+
+                <div class="command-section">
+                    <h3>Useful flags</h3>
+                    <div class="flags">
+                        <div class="flag">
+                            <code>FLAG</code>
+                            <span>
+                                Flag's description
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="command-section">
+                    <h3>Example</h3>
+                    <pre><code>$ ADD EXAMPLES</code></pre>
+                </div>
+            </section>
+
+          
+           <!-- =================================================
+                 PLACEHOLDER
+                 ================================================= -->
+            <section class="command-card" id="ADD_CONCEPT_NAME">
+                <header class="command-header">
+                    <code class="command-name">ADD_CONCEPT_NAME</code>
+                    <p class="command-purpose">
+                        Add concept function.
+                    </p>
+                </header>
+
+                <div class="command-section">
+                    <h3>Description</h3>
+                    <p>
+                        Add convepts's description.
+                    </p>
+                </div>
+
+                <div class="command-section">
+                    <h3>Useful flags</h3>
+                    <div class="flags">
+                        <div class="flag">
+                            <code>FLAG</code>
+                            <span>
+                                Flag's description
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="command-section">
+                    <h3>Example</h3>
+                    <pre><code>$ ADD EXAMPLES</code></pre>
+                </div>
+            </section>
+
+            <footer class="page-footer">
+
+                <a href="index.html">
+                    ← Linux
+                </a>
+            </footer>
+        </main>
+    </div>
+</body>
+
+</html>
