@@ -142,16 +142,15 @@
 
                 <div class="command-section">
                     <h3>Example</h3>
-                    <pre><code>$ ADD EXAMPLES</code></pre>
+                    <pre><code>$ sort < names.txt > sorted_names.txt
+                    $ sort names.txt</code></pre>
                 </div>
               
                 <div class="command-section">
                     <h3>Note</h3>
                     <p>
-                        Bash also accepts <code>[^...]</code> as a
-                        negated character class. For portable shell
-                        scripts, <code>[!...]</code> is the more
-                        traditional glob syntax.
+                        Both commands return the same result, but the mechanism is different.
+                        While using <code>sort < names.txt</code>, the shell handles the file reading instead of the command itself.
                     </p>
                 </div>
             </section>
