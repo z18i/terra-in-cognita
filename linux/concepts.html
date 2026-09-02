@@ -26,14 +26,12 @@
              ===================================================== -->
         <aside class="sidebar">
             <div class="sidebar-title">
-                Finding things
+                Operating concepts
             </div>
             <nav>
                 <a href="#stdout">Standard Input, Standard Output, Standard Error</a>
-                <a href="#ADD_CONCEPT_NAME">ADD_CONCEPT_NAME</a>
-                <a href="#ADD_CONCEPT_NAME">ADD_CONCEPT_NAME</a>
-                <a href="#ADD_CONCEPT_NAME">ADD_CONCEPT_NAME</a>
-                <a href="#ADD_CONCEPT_NAME">ADD_CONCEPT_NAME</a>
+                <a href="#piping">Piping</a>
+                <a href="#substitution">Command substitution</a>
                 <a href="#ADD_CONCEPT_NAME">ADD_CONCEPT_NAME</a>
 
 
@@ -61,7 +59,7 @@
                     How Linux operates
                 </h1>
                 <p class="intro">
-                    Commands for finding, greping, and other ways of locating files and content.
+                    Useful commands that facilitate using the Linux OS.
                 </p>
             </header>
 
@@ -82,7 +80,6 @@
                     <p>
                         Standard Input (<code>0</code>, <code>stdin</code>), Standard Output (<code>1</code>, <code>stdout</code>), and Standard Error (<code>2</code>, <code>stderr</code>) are the words, we and the shell, use to communicate.
                       Typically, we use <code>stdin</code> as a way to ask the shell to do specific things, and it replies with <code>stdout</code> or <code>sterr</code>.
-                        A pipe connects the standard output of one command to the standard input of another, using the <code>|</code> symbol.
                     </p>
                 </div>
 
@@ -131,12 +128,6 @@
                                 Bash shortcut for sending both stdout and stderr to a file (overwrite / append).
                             </span>
                         </div>
-                      <div class="flag">
-                            <code>|</code>
-                            <span>
-                                Connect one command’s stdout directly to the next command’s stdin.
-                            </span>
-                        </div>
                     </div>
                 </div>
 
@@ -145,7 +136,6 @@
                     <h3>Example</h3>
                     <pre><code>$ ls nonexistent_folder > stdout_file.txt 2> sterr_file.txt
 $
-$ cat names.txt | sort
 $
 $ sort < names.txt > sorted_names.txt
 $ sort names.txt</code></pre>
@@ -163,11 +153,11 @@ $ sort names.txt</code></pre>
 
           
            <!-- =================================================
-                 PLACEHOLDER
+                 Piping
                  ================================================= -->
-                      <section class="command-card" id="ADD_CONCEPT_NAME">
+                      <section class="command-card" id="piping">
                 <header class="command-header">
-                    <code class="command-name">ADD_CONCEPT_NAME</code>
+                    <code class="command-name">Piping</code>
                     <p class="command-purpose">
                         Add concept function.
                     </p>
@@ -176,17 +166,18 @@ $ sort names.txt</code></pre>
                 <div class="command-section">
                     <h3>Description</h3>
                     <p>
-                        Add convepts's description.
+                    A pipe connects the standard output of one command to the standard input of another using the <code>|</code> symbol.
+
                     </p>
                 </div>
 
                 <div class="command-section">
                     <h3>Useful flags</h3>
                     <div class="flags">
-                        <div class="flag">
-                            <code>FLAG</code>
+                      <div class="flag">
+                            <code>|</code>
                             <span>
-                                Flag's description
+                                Connect one command’s stdout directly to the next command’s stdin.
                             </span>
                         </div>
                     </div>
@@ -195,19 +186,28 @@ $ sort names.txt</code></pre>
 
                 <div class="command-section">
                     <h3>Example</h3>
-                    <pre><code>$ ADD EXAMPLES</code></pre>
+                    <pre><code>$ cat names.txt | sort
+$
+$ cat data.txt | sort | head -5
+$
+$ cat names | sort | uniq | wc -l
+$
+$ ls -l | grep "report"
+$
+$ ps aux | grep "python"
+                    </code></pre>
                 </div>
             </section>
 
           
            <!-- =================================================
-                 PLACEHOLDER
+                 Command substitution
                  ================================================= -->
-            <section class="command-card" id="ADD_CONCEPT_NAME">
+            <section class="command-card" id="substitution">
                 <header class="command-header">
-                    <code class="command-name">ADD_CONCEPT_NAME</code>
+                    <code class="command-name">Command substitution</code>
                     <p class="command-purpose">
-                        Add concept function.
+                        You can embed a result of a command inside another command.
                     </p>
                 </header>
 
@@ -222,9 +222,11 @@ $ sort names.txt</code></pre>
                     <h3>Useful flags</h3>
                     <div class="flags">
                         <div class="flag">
-                            <code>FLAG</code>
+                            <code>$(...)</code>
                             <span>
-                                Flag's description
+                                You can use one command directly within another one while using the first one. This can be useful in a dynamic environment.
+                                In the example section, you can see that the echo command will always provide the number of files within the folder and it doesn't
+                                matter what is your <code>pwd</code>.
                             </span>
                         </div>
                     </div>
@@ -233,7 +235,7 @@ $ sort names.txt</code></pre>
 
                 <div class="command-section">
                     <h3>Example</h3>
-                    <pre><code>$ ADD EXAMPLES</code></pre>
+                    <pre><code>$ echo "There are $(ls | wc -l) files here."</code></pre>
                 </div>
             </section>
 
