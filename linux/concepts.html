@@ -82,6 +82,7 @@
                     <p>
                         Standard Input (<code>0</code>, <code>stdin</code>), Standard Output (<code>1</code>, <code>stdout</code>), and Standard Error (<code>2</code>, <code>stderr</code>) are the words, we and the shell, use to communicate.
                       Typically, we use <code>stdin</code> as a way to ask the shell to do specific things, and it replies with <code>stdout</code> or <code>sterr</code>.
+                        A pipe connects the standard output of one command to the standard input of another, using the <code>|</code> symbol.
                     </p>
                 </div>
 
@@ -143,6 +144,8 @@
                 <div class="command-section">
                     <h3>Example</h3>
                     <pre><code>$ ls nonexistent_folder > stdout_file.txt 2> sterr_file.txt
+$
+$ cat names.txt | sort
 $
 $ sort < names.txt > sorted_names.txt
 $ sort names.txt</code></pre>
